@@ -297,6 +297,11 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
         tblProduct.getTableHeader().setReorderingAllowed(false);
+        tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProduct);
         if (tblProduct.getColumnModel().getColumnCount() > 0) {
             tblProduct.getColumnModel().getColumn(0).setResizable(false);
@@ -786,6 +791,24 @@ public class MainGUI extends javax.swing.JFrame {
         if(i>=0)
         txtProducer.setText(cbProducer.getItemAt(i));
     }//GEN-LAST:event_cbProducerActionPerformed
+
+    private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
+        int index = tblProduct.getSelectedRow();
+        if(index>=0){
+            Product pr=dt.getProduct().get(index);
+            txtname.setText(pr.getName());
+            txtid.setText(pr.getId());
+            txtProducer.setText(pr.getProducer());
+            txtquantity.setText(String.valueOf(pr.getQuantity()));
+            txtMemory.setText(String.valueOf(pr.getMemory()));
+            txtPrice.setText(String.valueOf(pr.getPrice()));
+            txtgua.setText(String.valueOf(pr.getGuarantee()));
+            if(pr.getType().equalsIgnoreCase("phone"))
+                cbType.setSelectedIndex(0);
+            else
+                cbType.setSelectedIndex(1);
+        }
+    }//GEN-LAST:event_tblProductMouseClicked
 
     /**
      * @param args the command line arguments
