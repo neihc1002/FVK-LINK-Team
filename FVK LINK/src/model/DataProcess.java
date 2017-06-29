@@ -9,6 +9,7 @@ import Entity.Producer;
 import Entity.Product;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -82,5 +83,27 @@ public class DataProcess {
         }
         return list;
         
+    }
+    public boolean addProduct(String id, String name, String producer, int quantity, float price, String memory, int guarantee, String type, String money){
+        int result = 0;
+        String sql="INSERT INTO tblProduct VALUES (?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, id);
+            prst.setString(2, name);
+            prst.setString(3, producer);
+            prst.setString(4, type);
+            prst.setString(5, memory);
+            prst.setFloat(6, price);
+            prst.setInt(7, quantity);
+            prst.setInt(8, guarantee);
+            prst.setString(9, money);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
     }
 }

@@ -599,12 +599,12 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(pnLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(pnContent, javax.swing.GroupLayout.PREFERRED_SIZE, 1001, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(pnContent, javax.swing.GroupLayout.PREFERRED_SIZE, 1001, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(207, 207, 207)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -632,8 +632,9 @@ public class MainGUI extends javax.swing.JFrame {
                 cbProducer.addItem(pr.getName());
             }
         }
-        cardContent.show(pnContent, "pnManage");
         model();
+        cardContent.show(pnContent, "pnManage");
+        txtClear();
     }//GEN-LAST:event_btnManageActionPerformed
 
     private void btnCustomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomeActionPerformed
@@ -743,14 +744,39 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCustomerMousePressed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        String id = null;
+        String name;
+        String producer;
+        String type = null;
+        float price = 0;
+        int quantity;
+        int guarantee = 0;
+        String memory;
+        String money;
         btnAdd.setIcon(new ImageIcon("src/additem3_1.png"));
-        if(fAdd==true)
-        {
-            txtid.setEditable(fAdd);
-            txtname.setEditable(fAdd);
-            txtProducer.setEditable(fAdd);
-
+        if(cbType.getSelectedIndex()==0||cbType.getSelectedIndex()==1){
+            int idl=dt.getProduct().size()+1;
+            id="PD"+idl;
         }
+        name=txtname.getText();
+        producer = (String) cbProducer.getSelectedItem();
+        quantity=Integer.parseInt(txtquantity.getText());
+        String gua = (String) cbGua.getSelectedItem();
+        memory=(String) cbMemory.getSelectedItem();
+        money = (String) cbmoney.getSelectedItem();
+        price=Float.parseFloat(txtPrice.getText());
+        guarantee=Integer.parseInt(gua.substring(0, gua.length()-6));
+        if(cbType.getSelectedIndex()==0){
+            type="Phone";
+        }
+        else
+            type="Accessories";
+        if(dt.addProduct(id, name, producer, quantity, price, memory, guarantee, type, money)){
+            JOptionPane.showMessageDialog(this, "Login Success!", "Notification", JOptionPane.PLAIN_MESSAGE);
+            model();
+        }
+        else
+            JOptionPane.showMessageDialog(this, "You entered an incorrect password!", "Notification", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
@@ -899,13 +925,22 @@ public class MainGUI extends javax.swing.JFrame {
                 v.add(p.getName());
                 v.add(p.getProducer());
                 v.add(String.valueOf(p.getQuantity()));
-                v.add(String.valueOf(p.getPrice())+" VNĐ");
-                v.add(String.valueOf(p.getMemory())+" "+"GB");
+                v.add(String.valueOf(p.getPrice())+p.getMoney());
+                v.add(String.valueOf(p.getMemory()));
                 v.add(String.valueOf(p.getGuarantee())+" Tháng");
                 v.add(p.getType());
                 model.addRow(v);
             }
             tblProduct.setModel(model);
+    }
+
+    private void txtClear() {
+        txtMemory.setText("");
+        txtPrice.setText("");
+        txtProducer.setText("");
+        txtname.setText("");
+        txtgua.setText("");
+        txtquantity.setText("");
     }
 }
 
