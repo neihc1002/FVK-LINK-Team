@@ -7,6 +7,7 @@ package model;
 
 import Entity.Producer;
 import Entity.Product;
+import static com.sun.javafx.tk.Toolkit.getToolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -51,11 +52,14 @@ public class DataProcess {
                 String producer= rs.getString(3);
                 String type= rs.getString(4);
                 String memory= rs.getString(5);
-                float price= rs.getFloat(6);
-                int quanlity= rs.getInt(7);
-                int guarantee= rs.getInt(8);
-                String money = rs.getString(9);
-                Product pr=new Product(id, name, producer, type, memory, price, quanlity, guarantee, money);
+                String pricein= rs.getString(6);
+                String priceout= rs.getString(7);
+                int quantity= rs.getInt(8);
+                String guarantee= rs.getString(9);
+                String coin = rs.getString(10);
+                String info=rs.getString(11);
+                byte[] image=rs.getBytes(12);
+                Product pr=new Product(id, name, producer, type, memory, pricein, priceout, quantity, guarantee, coin, info, image);
                 list.add(pr);
             }
             rs.close();

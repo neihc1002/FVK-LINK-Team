@@ -15,10 +15,13 @@ public class Product {
     private String producer;
     private String type;
     private String memory;
-    private float price;    
+    private String pricein;  
+    private String priceout;
     private int quantity;
-    private int guarantee;
-    private String money;
+    private String guarantee;
+    private String coin;
+    private String info;
+    private byte[] image;
 
     public Product() {
     }
@@ -63,12 +66,20 @@ public class Product {
         this.memory = memory;
     }
 
-    public float getPrice() {
-        return price;
+    public String getPricein() {
+        return pricein;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setPricein(String pricein) {
+        this.pricein = pricein;
+    }
+
+    public String getPriceout() {
+        return priceout;
+    }
+
+    public void setPriceout(String priceout) {
+        this.priceout = priceout;
     }
 
     public int getQuantity() {
@@ -79,34 +90,51 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getGuarantee() {
+    public String getGuarantee() {
         return guarantee;
     }
 
-    public void setGuarantee(int guarantee) {
+    public void setGuarantee(String guarantee) {
         this.guarantee = guarantee;
     }
 
-    public String getMoney() {
-        return money;
+    public String getCoin() {
+        return coin;
     }
 
-    public void setMoney(String money) {
-        this.money = money;
+    public void setCoin(String coin) {
+        this.coin = coin;
     }
 
-    public Product(String id, String name, String producer, String type, String memory, float price, int quantity, int guarantee, String money) {
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public Product(String id, String name, String producer, String type, String memory, String pricein, String priceout, int quantity, String guarantee, String coin, String info, byte[] image) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.type = type;
         this.memory = memory;
-        this.price = price;
+        this.pricein = pricein;
+        this.priceout = priceout;
         this.quantity = quantity;
         this.guarantee = guarantee;
-        this.money = money;
+        this.coin = coin;
+        this.info = info;
+        this.image = image;
     }
 
-  
-    
 }
