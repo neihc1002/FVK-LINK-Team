@@ -69,6 +69,49 @@ public class DataProcess {
         return list;
         
     }
+    public boolean save(String id,String name, String producer, String pricein, String priceout, String memory, String guarantee,String money){
+        int result=0;
+        String sql = "UPDATE tblProduct SET _name=?,_producer=?,_pricein=?, _priceout=?, _memory=?, _guarantee=?, _money=? WHERE _id=?";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, name);
+            prst.setString(2, producer);
+            prst.setString(3, pricein);
+            prst.setString(4, priceout);
+            prst.setString(5, memory);
+            prst.setString(6, guarantee);
+            prst.setString(7, money);
+            prst.setString(8, id);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result>0;
+        
+        
+        
+    }
+    
+    
+    public boolean deleteIteam(String id)
+    {
+        int result=0;
+        String sql="DELETE FROM tblProduct WHERE _id=?";
+        try {
+            PreparedStatement prst = getConnection(
+            ).prepareStatement(sql);
+            prst.setString(1, id);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return result>0;
+    }
+   
+
+        
     public ArrayList<Producer> getProducer(){
         ArrayList<Producer> list = new ArrayList<>();
         String sql = "SELECT * FROM tblProducer";

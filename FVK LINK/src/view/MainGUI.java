@@ -10,14 +10,22 @@ import Entity.Product;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.stage.FileChooser;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.TableUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.DataProcess;
@@ -34,6 +42,9 @@ public class MainGUI extends javax.swing.JFrame {
     DataProcess dt =new DataProcess();
     private CardLayout cardContent=null;
     private CardLayout cardLeft=null;
+    private boolean flag=true;
+    private DefaultTableModel model;
+    private JFileChooser filechooser;
     public MainGUI() {
         initComponents();
         cardContent=(CardLayout) pnContent.getLayout();
@@ -63,6 +74,7 @@ public class MainGUI extends javax.swing.JFrame {
         txtinfo = new javax.swing.JTextPane();
         btnBack = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         pnContent = new javax.swing.JPanel();
         pnMain = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -93,6 +105,7 @@ public class MainGUI extends javax.swing.JFrame {
         btnSearch = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         txtPricein = new javax.swing.JTextField();
+        btnedit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
@@ -148,6 +161,13 @@ public class MainGUI extends javax.swing.JFrame {
 
         jButton2.setText("jButton1");
 
+        jButton1.setText("Change Image");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnLeft2Layout = new javax.swing.GroupLayout(pnLeft2);
         pnLeft2.setLayout(pnLeft2Layout);
         pnLeft2Layout.setHorizontalGroup(
@@ -165,15 +185,21 @@ public class MainGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(pnLeft2Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnLeft2Layout.setVerticalGroup(
             pnLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnLeft2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(imgLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(pnLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -347,7 +373,8 @@ public class MainGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tblProduct.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblProduct.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblProduct.getTableHeader().setResizingAllowed(false);
         tblProduct.getTableHeader().setReorderingAllowed(false);
         tblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -433,12 +460,56 @@ public class MainGUI extends javax.swing.JFrame {
 
         btnSearch.setText("Search");
 
+        btnDelete.setFont(new java.awt.Font("Tahoma", 0, 1)); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/deletecus1.png"))); // NOI18N
+        btnDelete.setBorder(null);
+        btnDelete.setContentAreaFilled(false);
+        btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseExited(evt);
+            }
+        });
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         txtPricein.setInheritsPopupMenu(true);
         txtPricein.setMinimumSize(new java.awt.Dimension(0, 0));
         txtPricein.setPreferredSize(new java.awt.Dimension(0, 0));
         txtPricein.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtPriceinKeyReleased(evt);
+            }
+        });
+
+        btnedit.setFont(new java.awt.Font("Tahoma", 0, 1)); // NOI18N
+        btnedit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/editcus1.png"))); // NOI18N
+        btnedit.setBorder(null);
+        btnedit.setContentAreaFilled(false);
+        btnedit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnedit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btneditMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btneditMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btneditMousePressed(evt);
+            }
+        });
+        btnedit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneditActionPerformed(evt);
             }
         });
 
@@ -465,12 +536,13 @@ public class MainGUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnedit)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
                                         .addGap(45, 45, 45))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel3)
@@ -516,17 +588,22 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbmoney, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                     .addComponent(txtPricein, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(cbMemory, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbGua, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(43, 43, 43)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(cbMemory, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbGua, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(53, 53, 53)
+                        .addComponent(btnedit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout pnManageLayout = new javax.swing.GroupLayout(pnManage);
@@ -591,6 +668,16 @@ public class MainGUI extends javax.swing.JFrame {
         }
         cardContent.show(pnContent, "pnManage");
         cardLeft.show(pnLeft, "pnLeft2");
+        
+        txtPricein.setEditable(false);
+        txtProducer.setEditable(false);
+        txtname.setEditable(false);
+        txtquantity.setEditable(false);
+        cbGua.setEnabled(false);
+        cbMemory.setEnabled(false);
+        cbmoney.setEnabled(false);
+        cbProducer.setEnabled(false);
+        btnedit.setEnabled(false);
         
     }//GEN-LAST:event_btnManageActionPerformed
 
@@ -670,7 +757,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
         int index = tblProduct.getSelectedRow();
-        if(index>=0){
+        if(index>=0&&dt.getProduct().size()>0){
             Product pr=dt.getProduct().get(index);
             txtname.setText(pr.getName());
             txtProducer.setText(pr.getProducer());
@@ -682,6 +769,17 @@ public class MainGUI extends javax.swing.JFrame {
             byte[] image = pr.getImage();
             imgLeft.setIcon(new ImageIcon(image));
             txtinfo.setText(pr.getInfo());
+            btnedit.setEnabled(true);
+            txtPricein.setEditable(false);
+            txtProducer.setEditable(false);
+            txtname.setEditable(false);
+            txtquantity.setEditable(false);
+            cbGua.setEnabled(false);
+            cbMemory.setEnabled(false);
+            cbmoney.setEnabled(false);
+            cbProducer.setEnabled(false);
+            flag=true;
+            btnedit.setIcon(new ImageIcon("src/editcus1.png"));
         }
     }//GEN-LAST:event_tblProductMouseClicked
 
@@ -694,16 +792,18 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackMouseExited
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        flag=true;
+        btnedit.setIcon(new ImageIcon("src/editcus1.png"));
         btnBack.setIcon(new ImageIcon("src/back2.png"));
         cardContent.show(pnContent, "pnMain");
         cardLeft.show(pnLeft, "pnLeft1");
         ArrayList<Producer> list = dt.getProducer();
         imgLeft.setIcon(null);
+        tblProduct.clearSelection();
         txtinfo.setText("");
         for(Producer p:list){
             cbProducer.removeItem(p.getName());
         }
-        clear();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnBackMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackMousePressed
@@ -721,6 +821,138 @@ public class MainGUI extends javax.swing.JFrame {
     private void btnInputMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInputMousePressed
         btnInput.setIcon(new ImageIcon("src/nhaphang2.png"));
     }//GEN-LAST:event_btnInputMousePressed
+
+    private void btneditMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btneditMouseEntered
+        if(btnedit.isEnabled()){
+        btnedit.setIcon(new ImageIcon("src/editcus2.png"));
+        if(!flag){
+            btnedit.setIcon(new ImageIcon("src/savecus2.png"));
+        }
+        else if(flag){
+            btnedit.setIcon(new ImageIcon("src/editcus2.png"));
+        }
+        }
+    }//GEN-LAST:event_btneditMouseEntered
+
+    private void btneditMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btneditMouseExited
+        if(btnedit.isEnabled()){
+        btnedit.setIcon(new ImageIcon("src/editcus1.png"));
+        if(!flag)
+            btnedit.setIcon(new ImageIcon("src/savecus1.png"));
+        else if(flag){
+            btnedit.setIcon(new ImageIcon("src/editcus1.png"));
+        }
+        }
+    }//GEN-LAST:event_btneditMouseExited
+
+    private void btneditMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btneditMousePressed
+        if(btnedit.isEnabled()){
+        btnedit.setIcon(new ImageIcon("src/editcus3.png"));
+        if(!flag)
+            btnedit.setIcon(new ImageIcon("src/savecus3.png"));
+        else if(flag){
+            btnedit.setIcon(new ImageIcon("src/editcus3.png"));
+        }
+        }
+    }//GEN-LAST:event_btneditMousePressed
+
+    private void btneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditActionPerformed
+        
+        if(flag){
+        btnedit.setIcon(new ImageIcon("src/savecus1.png"));
+        txtPricein.setEditable(true);
+        txtinfo.setEditable(true);
+        txtname.setEditable(true);
+        cbGua.setEnabled(true);
+        cbMemory.setEnabled(true);
+        cbProducer.setEnabled(true);
+        cbmoney.setEnabled(true);
+        flag=false;
+        }
+        else if(!flag){
+            String name=txtname.getText();
+            String id=dt.getProduct().get(tblProduct.getSelectedRow()).getId();
+            String pricein=txtPricein.getText();
+            String priceout="0";
+            String memory=(String) cbMemory.getSelectedItem();
+            String coin=(String) cbmoney.getSelectedItem();
+            String guarantee=(String) cbGua.getSelectedItem();
+            String producer=(String) cbProducer.getSelectedItem();
+            JPasswordField pwf = new JPasswordField(10);
+            Object[] obj = {"Please enter the password:\n\n", pwf};
+            Object stringArray[] = {"OK","Cancel"};
+            if (JOptionPane.showOptionDialog(null, obj, "Need password",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION){
+            String pass = String.valueOf(pwf.getPassword());
+            if(pass.equalsIgnoreCase("admin")){
+            if(dt.save(id, name,producer, pricein, priceout, memory, guarantee, coin)){
+                JOptionPane.showMessageDialog(this, "Update success", "Notification", JOptionPane.PLAIN_MESSAGE);
+                model();
+                
+            }
+            else
+                JOptionPane.showMessageDialog(this, "Error", "Notification", JOptionPane.ERROR_MESSAGE);   
+        }else
+            JOptionPane.showMessageDialog(this, "You entered an incorrect password!", "Notification", JOptionPane.ERROR_MESSAGE); 
+        }
+        }   
+        
+    }//GEN-LAST:event_btneditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        btnDelete.setIcon(new ImageIcon("src/deletecus1.png"));
+        if(dt.getProduct().size()!=0&&tblProduct.getSelectedRow()>=0){
+        String id=dt.getProduct().get(tblProduct.getSelectedRow()).getId();
+        JPasswordField pwf = new JPasswordField(10);
+        Object[] obj = {"Please enter the password:\n\n", pwf};
+        Object stringArray[] = {"OK","Cancel"};
+        if (JOptionPane.showOptionDialog(null, obj, "Need password",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION){
+        String pass = String.valueOf(pwf.getPassword());
+        if(pass.equalsIgnoreCase("admin")){
+        int reply = JOptionPane.showConfirmDialog(null, "Are you sure?","Notification", JOptionPane.YES_NO_OPTION);
+        if(reply == JOptionPane.YES_OPTION){
+            if(dt.deleteIteam(id))
+                {
+                    if(dt.getProduct().size()!=0){
+                        model();
+                        JOptionPane.showMessageDialog(this, "Delete success!");
+                    }
+                    else{
+                        model.removeRow(0);
+                    }    
+                }
+            else
+                JOptionPane.showMessageDialog(this, "Error", "Notification", JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else
+            JOptionPane.showMessageDialog(this, "You entered an incorrect password!", "Notification", JOptionPane.ERROR_MESSAGE); 
+        }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseEntered
+        btnDelete.setIcon(new ImageIcon("src/deletecus2.png"));
+    }//GEN-LAST:event_btnDeleteMouseEntered
+
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        btnDelete.setIcon(new ImageIcon("src/deletecus3.png"));
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    private void btnDeleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseExited
+        btnDelete.setIcon(new ImageIcon("src/deletecus1.png"));
+    }//GEN-LAST:event_btnDeleteMouseExited
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(filter);
+        int choose = fileChooser.showOpenDialog(null);
+        if (choose == JFileChooser.APPROVE_OPTION) {
+          File selectedFile = fileChooser.getSelectedFile();
+          imgLeft.setIcon(new ImageIcon(selectedFile.getPath()));
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -766,11 +998,13 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnManage;
     private javax.swing.JButton btnManage3;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnedit;
     private javax.swing.JComboBox<String> cbGua;
     private javax.swing.JComboBox<String> cbMemory;
     private javax.swing.JComboBox<String> cbProducer;
     private javax.swing.JComboBox<String> cbmoney;
     private javax.swing.JLabel imgLeft;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
@@ -801,13 +1035,14 @@ public class MainGUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void model() {
-            DefaultTableModel model = (DefaultTableModel)tblProduct.getModel();
             ArrayList<Product> list = dt.getProduct();
+            model = (DefaultTableModel) tblProduct.getModel();
+            if(list.size()>0){
             model.getDataVector().clear();
             TableColumnModel table=tblProduct.getColumnModel();
             table.getColumn(0).setPreferredWidth(25);
             table.getColumn(3).setPreferredWidth(45);
-            table.getColumn(6).setPreferredWidth(40);
+            table.getColumn(6).setPreferredWidth(45);
             for(Product p:list){
                 Vector v =new Vector();
                 v.add(p.getId());
@@ -820,8 +1055,9 @@ public class MainGUI extends javax.swing.JFrame {
                 v.add(String.valueOf(p.getGuarantee()));
                 v.add(p.getType());
                 model.addRow(v);
+                tblProduct.setModel(model);
             }
-            tblProduct.setModel(model);
+            }
     }
 
     private void clear() {
