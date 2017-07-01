@@ -8,6 +8,11 @@ package model;
 import Entity.Producer;
 import Entity.Product;
 import static com.sun.javafx.tk.Toolkit.getToolkit;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,12 +22,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author duong
  */
-public class DataProcess {
+public class DataProcess implements Serializable{
     public Connection getConnection(){
         Connection con = null;
         try {
@@ -69,19 +76,24 @@ public class DataProcess {
         return list;
         
     }
-    public boolean save(String id,String name, String producer, String pricein, String priceout, String memory, String guarantee,String money){
+    public boolean save(String id,String name, String producer, String pricein, String priceout, String memory, String guarantee,String money, String image, String info) throws FileNotFoundException{
         int result=0;
-        String sql = "UPDATE tblProduct SET _name=?,_producer=?,_pricein=?, _priceout=?, _memory=?, _guarantee=?, _money=? WHERE _id=?";
+        File file =new File(image);
+        FileInputStream fis=new FileInputStream(file);
+        int len=(int) file.length(); 
+        String sql = "UPDATE tblProduct SET _image=?,_producer=?,_pricein=?, _priceout=?, _memory=?, _guarantee=?, _money=?, _info=?, _name=?  WHERE _id=?";
         try {
             PreparedStatement prst=getConnection().prepareStatement(sql);
-            prst.setString(1, name);
+            prst.setBinaryStream(1, fis,len);
             prst.setString(2, producer);
             prst.setString(3, pricein);
             prst.setString(4, priceout);
             prst.setString(5, memory);
             prst.setString(6, guarantee);
             prst.setString(7, money);
-            prst.setString(8, id);
+            prst.setString(8, info);
+            prst.setString(9, name);
+            prst.setString(10, id);
             result=prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

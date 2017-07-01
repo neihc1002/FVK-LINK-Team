@@ -8,24 +8,22 @@ package view;
 import Entity.Producer;
 import Entity.Product;
 import java.awt.CardLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.stage.FileChooser;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.plaf.TableUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.DataProcess;
@@ -34,7 +32,7 @@ import model.DataProcess;
  *
  * @author duong
  */
-public class MainGUI extends javax.swing.JFrame {
+public class MainGUI extends javax.swing.JFrame implements Serializable{
 
     /**
      * Creates new form MainGUI
@@ -44,7 +42,10 @@ public class MainGUI extends javax.swing.JFrame {
     private CardLayout cardLeft=null;
     private boolean flag=true;
     private DefaultTableModel model;
-    private JFileChooser filechooser;
+    private String pathimg;
+    private int index;
+    private boolean imgFlag=false;
+    Login lg=new Login();
     public MainGUI() {
         initComponents();
         cardContent=(CardLayout) pnContent.getLayout();
@@ -53,7 +54,6 @@ public class MainGUI extends javax.swing.JFrame {
         cardContent.addLayoutComponent(pnManage, "pnManage");
         cardLeft.addLayoutComponent(pnLeft1, "pnLeft1");
         cardLeft.addLayoutComponent(pnLeft2, "pnLeft2");
-        
     }
 
     /**
@@ -75,6 +75,7 @@ public class MainGUI extends javax.swing.JFrame {
         btnBack = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         pnContent = new javax.swing.JPanel();
         pnMain = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -107,6 +108,9 @@ public class MainGUI extends javax.swing.JFrame {
         txtPricein = new javax.swing.JTextField();
         btnedit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        userdp = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -168,6 +172,8 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Reset");
+
         javax.swing.GroupLayout pnLeft2Layout = new javax.swing.GroupLayout(pnLeft2);
         pnLeft2.setLayout(pnLeft2Layout);
         pnLeft2Layout.setHorizontalGroup(
@@ -176,19 +182,20 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(pnLeft2Layout.createSequentialGroup()
                 .addGroup(pnLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnLeft2Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(imgLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnLeft2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnLeft2Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(pnLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(imgLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnLeft2Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(pnLeft2Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnLeft2Layout.setVerticalGroup(
             pnLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +203,9 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(imgLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addGroup(pnLeft2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -421,7 +430,6 @@ public class MainGUI extends javax.swing.JFrame {
         txtquantity.setEditable(false);
         txtquantity.setText("0");
         txtquantity.setInheritsPopupMenu(true);
-        txtquantity.setPreferredSize(new java.awt.Dimension(12, 20));
 
         cbmoney.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         cbmoney.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VND", "USD", "EUR", "BTC", "JPY" }));
@@ -558,9 +566,8 @@ public class MainGUI extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cbProducer, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtname)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(cbMemory, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cbGua, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(cbMemory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbGua, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(77, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -626,6 +633,25 @@ public class MainGUI extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logo.png"))); // NOI18N
 
+        jLabel2.setText("Current User: ");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(10, 10, 10)
+                .addComponent(userdp, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(userdp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -641,6 +667,7 @@ public class MainGUI extends javax.swing.JFrame {
                         .addGap(207, 207, 207)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -652,7 +679,8 @@ public class MainGUI extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(pnContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(32, 32, 32))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -686,7 +714,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCustomeActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnManage3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManage3ActionPerformed
@@ -756,7 +784,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPriceinKeyReleased
 
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
-        int index = tblProduct.getSelectedRow();
+        index = tblProduct.getSelectedRow();
         if(index>=0&&dt.getProduct().size()>0){
             Product pr=dt.getProduct().get(index);
             txtname.setText(pr.getName());
@@ -766,8 +794,6 @@ public class MainGUI extends javax.swing.JFrame {
             txtPricein.setText(pr.getPricein());
             cbmoney.setSelectedItem(pr.getCoin());
             cbGua.setSelectedItem(pr.getGuarantee());
-            byte[] image = pr.getImage();
-            imgLeft.setIcon(new ImageIcon(image));
             txtinfo.setText(pr.getInfo());
             btnedit.setEnabled(true);
             txtPricein.setEditable(false);
@@ -778,6 +804,7 @@ public class MainGUI extends javax.swing.JFrame {
             cbMemory.setEnabled(false);
             cbmoney.setEnabled(false);
             cbProducer.setEnabled(false);
+            imgLeft.setIcon(new ImageIcon(pr.getImage()));
             flag=true;
             btnedit.setIcon(new ImageIcon("src/editcus1.png"));
         }
@@ -878,19 +905,35 @@ public class MainGUI extends javax.swing.JFrame {
             String coin=(String) cbmoney.getSelectedItem();
             String guarantee=(String) cbGua.getSelectedItem();
             String producer=(String) cbProducer.getSelectedItem();
+            String info=txtinfo.getText();
+            String image;
+            txtSearch.setText(dt.getProduct().get(index).getImage().toString());
+            if(imgFlag){
+                image=pathimg;
+            }
+            else{
+                image=imgOut();
+            }
             JPasswordField pwf = new JPasswordField(10);
             Object[] obj = {"Please enter the password:\n\n", pwf};
             Object stringArray[] = {"OK","Cancel"};
             if (JOptionPane.showOptionDialog(null, obj, "Need password",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION){
             String pass = String.valueOf(pwf.getPassword());
             if(pass.equalsIgnoreCase("admin")){
-            if(dt.save(id, name,producer, pricein, priceout, memory, guarantee, coin)){
-                JOptionPane.showMessageDialog(this, "Update success", "Notification", JOptionPane.PLAIN_MESSAGE);
-                model();
-                
-            }
-            else
-                JOptionPane.showMessageDialog(this, "Error", "Notification", JOptionPane.ERROR_MESSAGE);   
+                try {
+                    if(dt.save(id, name, producer, pricein, priceout, memory, guarantee, coin,image, info)){
+                        
+                        model();
+                        File file=new File(imgOut());
+                        if(file.exists())
+                        if(file.delete()) 
+                            JOptionPane.showMessageDialog(this, "Update success", "Notification", JOptionPane.PLAIN_MESSAGE);
+                    }
+                    else   
+                        JOptionPane.showMessageDialog(this, "Error", "Notification", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
         }else
             JOptionPane.showMessageDialog(this, "You entered an incorrect password!", "Notification", JOptionPane.ERROR_MESSAGE); 
         }
@@ -951,6 +994,22 @@ public class MainGUI extends javax.swing.JFrame {
         if (choose == JFileChooser.APPROVE_OPTION) {
           File selectedFile = fileChooser.getSelectedFile();
           imgLeft.setIcon(new ImageIcon(selectedFile.getPath()));
+          pathimg=selectedFile.getPath();
+          imgFlag=true;
+          String pathname="src/"+dt.getProduct().get(index).getId()+".png";
+          File file=new File(pathname);
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+              try {
+                  fos.write(dt.getProduct().get(index).getImage());
+                  fos.close();
+              } catch (IOException ex) {
+                  Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+              }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -1006,8 +1065,10 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JLabel imgLeft;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1017,6 +1078,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel pnContent;
@@ -1032,6 +1094,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JTextPane txtinfo;
     private javax.swing.JTextField txtname;
     private javax.swing.JTextField txtquantity;
+    private javax.swing.JLabel userdp;
     // End of variables declaration//GEN-END:variables
 
     private void model() {
@@ -1069,5 +1132,25 @@ public class MainGUI extends javax.swing.JFrame {
         txtquantity.setText("");
         cbGua.setSelectedIndex(0);
     }
+    private String imgOut(){
+        String pathname = null;
+        if(index>=0){
+            pathname="src/"+dt.getProduct().get(index).getId()+".png";
+          File file=new File(pathname);
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+              try {
+                  fos.write(dt.getProduct().get(index).getImage());
+                  fos.close();
+              } catch (IOException ex) {
+                  Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+              }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return pathname;
+    }
+
 }
 

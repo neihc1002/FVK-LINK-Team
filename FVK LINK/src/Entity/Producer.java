@@ -5,11 +5,13 @@
  */
 package Entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author duong
  */
-public class Producer {
+public class Producer implements Serializable{
     private String name;
     private String info;
 
