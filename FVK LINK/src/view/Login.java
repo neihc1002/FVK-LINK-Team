@@ -17,8 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
 
-    
-    static private Login login = new Login();
+    private static Login login = new Login();
     private String passAd="admin";
     private String passMem="member";
     private String user;
@@ -195,9 +194,9 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String passA = passAd;
-        String passM= passMem;
-        if(cbID.getSelectedIndex()==0&&txtPass.getText().equals(passA)){
+            String passA = passAd;
+            String passM= passMem;
+            if(cbID.getSelectedIndex()==0&&txtPass.getText().equals(passA)){
             JOptionPane.showMessageDialog(this, "Login Success!", "Notification", JOptionPane.PLAIN_MESSAGE);
             MainGUI main =new  MainGUI();
             main.setVisible(true);

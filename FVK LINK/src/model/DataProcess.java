@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -76,7 +77,7 @@ public class DataProcess implements Serializable{
         return list;
         
     }
-    public boolean save(String id,String name, String producer, String pricein, String priceout, String memory, String guarantee,String money, String image, String info) throws FileNotFoundException{
+    public boolean save(String id,String name, String producer, String pricein, String priceout, String memory, String guarantee,String money, String image, String info) throws FileNotFoundException, IOException{
         int result=0;
         File file =new File(image);
         FileInputStream fis=new FileInputStream(file);
@@ -95,6 +96,7 @@ public class DataProcess implements Serializable{
             prst.setString(9, name);
             prst.setString(10, id);
             result=prst.executeUpdate();
+            fis.close();
             prst.close();
         } catch (SQLException ex) {
             Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
