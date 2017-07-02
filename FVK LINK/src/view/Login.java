@@ -21,6 +21,18 @@ public class Login extends javax.swing.JFrame {
     private String passAd="admin";
     private String passMem="member";
     private String user;
+
+    public Login(String user) {
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
     public Login() {
         initComponents();
     }
@@ -230,6 +242,7 @@ public class Login extends javax.swing.JFrame {
             String passA = passAd;
             String passM= passMem;
             if(cbID.getSelectedIndex()==0&&txtPass.getText().equals(passA)){
+                setUser("Admin");
             JOptionPane.showMessageDialog(this, "Login Success!", "Notification", JOptionPane.PLAIN_MESSAGE);
             MainGUI main =new  MainGUI();
             main.setVisible(true);
