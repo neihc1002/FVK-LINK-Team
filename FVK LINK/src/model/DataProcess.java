@@ -167,4 +167,37 @@ public class DataProcess implements Serializable{
         
         return result>0;
     }
+    public boolean addProduct(String id,String name, String producer, String type, String memory, String priceIn, String priceOut, String quantity, String guarantee,String coin, String info, String image) throws IOException{
+        int result = 0;
+        File file=new File(image);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String sql="INSERT INTO tblProduct VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, id);
+            prst.setString(2, name);
+            prst.setString(3, producer);
+            prst.setString(4, type);
+            prst.setString(5, memory);
+            prst.setString(6, priceIn);
+            prst.setString(7, priceOut);
+            prst.setString(8, quantity);
+            prst.setString(9, guarantee);
+            prst.setString(10, coin);
+            prst.setString(11, info);
+            prst.setBinaryStream(12, fis, (int) file.length());
+            result=prst.executeUpdate();
+            fis.close();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
+    }
 }
