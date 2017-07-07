@@ -5,9 +5,13 @@
  */
 package model;
 
+import Entity.InputOrder;
+import Entity.ListProductIO;
 import Entity.Producer;
 import Entity.Product;
 import static com.sun.javafx.tk.Toolkit.getToolkit;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.stream.ImageInputStream;
@@ -199,5 +204,97 @@ public class DataProcess implements Serializable{
         }
         
         return result>0;
+    }
+    public boolean addInputList(String idOrder, String id, int quantity, String price, String producer, String memory ){
+        int result = 0;
+        String sql="INSERT INTO tblInputList VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, idOrder);
+            prst.setString(2, id);
+            prst.setInt(3, quantity);
+            prst.setString(4, price);
+            prst.setString(5, producer);
+            prst.setString(6, memory);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
+    }
+    public boolean addInputOrder(String idOrder, String importer, String date, String totalprice, int quantity ){
+        int result = 0;
+        String sql="INSERT INTO tblInputOrder VALUES (?,?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, idOrder);
+            prst.setString(2, importer);
+            prst.setString(3, date);
+            prst.setString(4, totalprice);
+            prst.setInt(5, quantity);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
+    }
+    public ArrayList<InputOrder> getInputOrder(){
+        ArrayList<InputOrder> list = new ArrayList<>();
+        String sql = "SELECT * FROM tblInputOrder";
+        try {
+            Statement st = getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                String id=rs.getString(1);
+                String importer= rs.getString(2);
+                String date=rs.getString(3);
+                String totalprice = rs.getString(4);
+                int quantity = rs.getInt(5);
+                InputOrder io = new InputOrder(id, importer, totalprice, date, quantity);
+                list.add(io);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;  
+    }
+    public boolean updateQuan(int num, String id) throws SQLException{
+        int result=0;
+        String sql = "UPDATE tblProduct SET _quantity=?  WHERE _id=?";
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setInt(1,num);
+            prst.setString(2, id);
+            result=prst.executeUpdate();
+            prst.close();
+        return result>0;
+            
+    }
+    public ArrayList<ListProductIO> getContentOrder(String idOrder){
+        ArrayList<ListProductIO> list = new ArrayList<>();
+        String sql = "SELECT * FROM tblInputList WHERE _idOrder=?";
+        try {
+            PreparedStatement prst = getConnection().prepareStatement(sql);
+            prst.setString(1, idOrder);
+            ResultSet rs = prst.executeQuery();
+            while(rs.next()){
+                String idO=rs.getString(1);
+                String id=rs.getString(2);
+                int quantity = rs.getInt(3);
+                String price = rs.getString(4);
+                String producer=rs.getString(5);
+                String memory = rs.getString(6);
+                ListProductIO lpio= new ListProductIO(idO, id, quantity, price, producer, memory);
+                list.add(lpio);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;  
     }
 }
