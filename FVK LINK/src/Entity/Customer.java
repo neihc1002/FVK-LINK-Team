@@ -14,13 +14,6 @@ public class Customer {
     private String name;
     private String phone;
     private String total;
-
-    public Customer(String id, String name, String phone, String total) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.total = total;
-    }
     private String rank;
 
     public Customer() {
