@@ -5,14 +5,12 @@
  */
 package model;
 
+import Entity.Customer;
 import Entity.InputOrder;
 import Entity.ListProductIO;
+import Entity.OutputOrder;
 import Entity.Producer;
 import Entity.Product;
-import static com.sun.javafx.tk.Toolkit.getToolkit;
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,11 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.ImageIcon;
+import javafx.scene.chart.PieChart;
 
 /**
  *
@@ -290,6 +286,54 @@ public class DataProcess implements Serializable{
                 String memory = rs.getString(6);
                 ListProductIO lpio= new ListProductIO(idO, id, quantity, price, producer, memory);
                 list.add(lpio);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;  
+    }
+    public ArrayList<OutputOrder> getOuputOrder(){
+        ArrayList<OutputOrder> list = new ArrayList<>();
+        String sql = "SELECT * FROM tblOutputOrder";
+        try {
+            Statement st = getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                String id=rs.getString(1);
+                String idcus= rs.getString(2);
+                String date=rs.getString(3);
+                int quantity = rs.getInt(4);
+                String sale = rs.getString(5);
+                String totalprice = rs.getString(6);
+                String note = rs.getString(7);
+                OutputOrder oo = new OutputOrder(id, idcus, date, quantity, sale, totalprice, note);
+                list.add(oo);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;  
+    }
+    public static void main(String[] args) {
+        DataProcess dt=new DataProcess();
+        dt.getCustomer();
+    }
+    public ArrayList<Customer> getCustomer(){
+        ArrayList<Customer> list = new ArrayList<>();
+        String sql = "SELECT * FROM tblCustomer";
+        try {
+            Statement st = getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                String id=rs.getString(1);
+                String name= rs.getString(2);
+                String phone=rs.getString(3);
+                String total = rs.getString(4);
+                String rank = rs.getString(5);
+                Customer cus = new Customer(id, name, phone, total, rank);
+                list.add(cus);
             }
             rs.close();
         } catch (SQLException ex) {

@@ -5,18 +5,17 @@
  */
 package view;
 
+import Entity.Customer;
 import Entity.InputOrder;
 import Entity.ListProductIO;
+import Entity.OutputOrder;
 import Entity.Producer;
 import Entity.Product;
 import Entity.inputList;
-import com.sun.org.apache.xml.internal.utils.StringVector;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,35 +23,27 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.text.NumberFormatter;
 import javazoom.jl.player.Player;
 import model.DataProcess;
 
@@ -76,6 +67,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     private Player player;
     DefaultTableModel default1 ;
     ArrayList<inputList> listiputArrayList = new ArrayList<>();
+    ArrayList<inputList> listoutputArrayList = new ArrayList<>();
     Hashtable<Integer, inputList> listiputHashTable = new Hashtable<>();
     private int x=25;
     private int y=50;
@@ -100,6 +92,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         cardInput.addLayoutComponent(pnAdd, "pnAdd");
         cardLeft.addLayoutComponent(pnLeft4, "pnLeft4");
         cardContent.addLayoutComponent(pnOrderList, "pnOrderList");
+        cardContent.addLayoutComponent(pnOrderOP, "pnOrderOP");
     }
 
     /**
@@ -113,7 +106,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
 
         btngSearch = new javax.swing.ButtonGroup();
         btngSearch1 = new javax.swing.ButtonGroup();
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        btngSearch2 = new javax.swing.ButtonGroup();
         pnLeft = new javax.swing.JPanel();
         pnLeft1 = new javax.swing.JPanel();
         pnLeft2 = new javax.swing.JPanel();
@@ -224,32 +217,34 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         jScrollPane7 = new javax.swing.JScrollPane();
         tblContentOrder = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
+        pnOrderOP = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtIDOP = new javax.swing.JTextField();
+        txtDateOP = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtCusnameOp = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jScrollPane10 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtOPNote = new javax.swing.JTextArea();
+        txtcusphone = new javax.swing.JTextField();
+        jLabel31 = new javax.swing.JLabel();
+        txtRank = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblOPSearch = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
-        btnOPSearch = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jButton3 = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
+        txtOPSearch = new javax.swing.JTextField();
+        rbByIDOP = new javax.swing.JRadioButton();
+        rbbyNameOP = new javax.swing.JRadioButton();
+        btnAddOP = new javax.swing.JButton();
+        sp1 = new javax.swing.JSpinner();
         jLabel17 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblListOP = new javax.swing.JTable();
         jPanel15 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -759,8 +754,8 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         txtPriceout.setMinimumSize(new java.awt.Dimension(0, 0));
         txtPriceout.setPreferredSize(new java.awt.Dimension(0, 0));
         txtPriceout.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPriceoutKeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPriceoutKeyTyped(evt);
             }
         });
 
@@ -783,6 +778,12 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         btnedit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btneditActionPerformed(evt);
+            }
+        });
+
+        txtPricein.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPriceinKeyTyped(evt);
             }
         });
 
@@ -1575,9 +1576,9 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
 
         jLabel18.setText("Order ID:");
 
-        jTextField1.setEditable(false);
+        txtIDOP.setEditable(false);
 
-        jTextField2.setEditable(false);
+        txtDateOP.setEditable(false);
 
         jLabel25.setText("Date");
 
@@ -1589,9 +1590,22 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
 
         jScrollPane10.setPreferredSize(new java.awt.Dimension(150, 96));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane10.setViewportView(jTextArea1);
+        txtOPNote.setColumns(20);
+        txtOPNote.setRows(5);
+        jScrollPane10.setViewportView(txtOPNote);
+
+        txtcusphone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtcusphoneKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcusphoneKeyTyped(evt);
+            }
+        });
+
+        jLabel31.setText("Rank");
+
+        txtRank.setEditable(false);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -1608,17 +1622,19 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField3)
-                            .addGroup(jPanel12Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtIDOP, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtCusnameOp)
+                                .addComponent(txtcusphone, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel31))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRank, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDateOP, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
@@ -1626,19 +1642,21 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIDOP, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateOP, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCusnameOp, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRank, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtcusphone, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createSequentialGroup()
                         .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1649,12 +1667,12 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
 
         jPanel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblOPSearch.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Producer", "Quantity", "Price", "Memory"
+                "ID", "Name", "Producer", "Quantity", "Memory", "Price"
             }
         ) {
             Class[] types = new Class [] {
@@ -1672,26 +1690,42 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane9.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-            jTable2.getColumnModel().getColumn(4).setResizable(false);
-            jTable2.getColumnModel().getColumn(5).setResizable(false);
+        tblOPSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblOPSearchMouseClicked(evt);
+            }
+        });
+        jScrollPane9.setViewportView(tblOPSearch);
+        if (tblOPSearch.getColumnModel().getColumnCount() > 0) {
+            tblOPSearch.getColumnModel().getColumn(0).setResizable(false);
+            tblOPSearch.getColumnModel().getColumn(1).setResizable(false);
+            tblOPSearch.getColumnModel().getColumn(2).setResizable(false);
+            tblOPSearch.getColumnModel().getColumn(3).setResizable(false);
+            tblOPSearch.getColumnModel().getColumn(4).setResizable(false);
+            tblOPSearch.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setText("Search");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("by ID");
+        txtOPSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtOPSearchKeyReleased(evt);
+            }
+        });
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("by Name");
+        btngSearch2.add(rbByIDOP);
+        rbByIDOP.setText("by ID");
 
-        jButton3.setText("ADD");
+        btngSearch2.add(rbbyNameOP);
+        rbbyNameOP.setText("by Name");
+
+        btnAddOP.setText("ADD");
+        btnAddOP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddOPActionPerformed(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setText("Number");
@@ -1700,22 +1734,22 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane9)
+            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnOPSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtOPSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton1)
+                .addComponent(rbByIDOP)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton2)
+                .addComponent(rbbyNameOP)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel17)
-                .addGap(18, 18, 18)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sp1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAddOP, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
         jPanel13Layout.setVerticalGroup(
@@ -1724,33 +1758,34 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 .addGap(10, 10, 10)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtOPSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel15)
-                        .addComponent(jRadioButton2)
-                        .addComponent(btnOPSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jRadioButton1)
-                        .addComponent(jLabel17))
+                        .addComponent(rbByIDOP)
+                        .addComponent(rbbyNameOP))
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnAddOP, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(sp1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel17)))))
                 .addGap(10, 10, 10)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblListOP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Memory", "Quantity", "Amount"
+                "ID", "Name", "Memory", "Quantity", "Price", "Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1761,21 +1796,22 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane8.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        tblListOP.getTableHeader().setReorderingAllowed(false);
+        jScrollPane8.setViewportView(tblListOP);
+        if (tblListOP.getColumnModel().getColumnCount() > 0) {
+            tblListOP.getColumnModel().getColumn(0).setResizable(false);
+            tblListOP.getColumnModel().getColumn(1).setResizable(false);
+            tblListOP.getColumnModel().getColumn(2).setResizable(false);
+            tblListOP.getColumnModel().getColumn(3).setResizable(false);
+            tblListOP.getColumnModel().getColumn(4).setResizable(false);
+            tblListOP.getColumnModel().getColumn(5).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+            .addComponent(jScrollPane8)
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1795,32 +1831,32 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnOrderOPLayout = new javax.swing.GroupLayout(pnOrderOP);
+        pnOrderOP.setLayout(pnOrderOPLayout);
+        pnOrderOPLayout.setHorizontalGroup(
+            pnOrderOPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnOrderOPLayout.createSequentialGroup()
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel11Layout.createSequentialGroup()
+            .addGroup(pnOrderOPLayout.createSequentialGroup()
                 .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+        pnOrderOPLayout.setVerticalGroup(
+            pnOrderOPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnOrderOPLayout.createSequentialGroup()
+                .addGroup(pnOrderOPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnOrderOPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        pnContent.add(jPanel11, "card6");
+        pnContent.add(pnOrderOP, "card6");
 
         jLabel2.setText("Current User: ");
 
@@ -1945,7 +1981,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnContent, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(pnContent, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1984,7 +2020,11 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     }//GEN-LAST:event_btnManageActionPerformed
 
     private void btnOutputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputActionPerformed
-        // TODO add your handling code here:
+        cardContent.show(pnContent, "pnOrderOP");
+        btnAddOP.setEnabled(false);
+        sp1.setEnabled(false);
+        txtIDOP.setText(createIdOP());
+        txtDateOP.setText(String.valueOf(date()));
     }//GEN-LAST:event_btnOutputActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
@@ -2039,32 +2079,6 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     private void cbMemoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMemoryActionPerformed
 
     }//GEN-LAST:event_cbMemoryActionPerformed
-
-    private void txtPriceoutKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceoutKeyReleased
-       String regex="[a-zA-Z ]";
-        String regex1="[^\\p{L}\\d\\s_]";
-        model(dt.getProduct());
-        String num="0";
-        Pattern p1 = Pattern.compile(regex);
-        Pattern p2 = Pattern.compile(regex1);
-        Matcher m1=p1.matcher(txtPriceout.getText());
-        Matcher m2=p2.matcher(txtPriceout.getText());
-        if(m1.find()||m2.find()){
-            txtPriceout.setText(txtPriceout.getText().substring(0,txtPriceout.getText().length()-1));
-        }
-        else{
-            if(txtPriceout.getText().length()==0){
-                txtPriceout.setText("");
-            }
-            else{
-                num=txtPriceout.getText();
-                if(num.length()>15){
-                    txtPriceout.setText("");
-                    JOptionPane.showMessageDialog(this, "Maximum", "Notification", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }//GEN-LAST:event_txtPriceoutKeyReleased
 
     private void tblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductMouseClicked
         index = tblProduct.getSelectedRow();
@@ -2530,7 +2544,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         for (int i = 0; i < saveNumber().size(); i++) {
             inputList il = saveNumber().get(i);
             int number = il.getNumber();
-            total=total+price(il, number);
+            total=total+price(il.getPrice(), number);
         }
         totalprice.setText(String.valueOf(total));
     }//GEN-LAST:event_btnChargedActionPerformed
@@ -2543,7 +2557,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         for (int i = 0; i < saveNumber().size(); i++) {
             inputList il = saveNumber().get(i);
             int number = il.getNumber();
-            total=total+price(il, number);
+            total=total+price(il.getPrice(), number);
             listiputArrayList=saveNumber();
         }
             
@@ -2636,7 +2650,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
             evt.consume();
             if(index>=0){
                 Product pr=dt.getProduct().get(index);
-                if(!checkInputList(pr.getId())){
+                if(!checkInputList(listiputArrayList,pr.getId())){
                     listiputArrayList=saveNumber();
                     inputList il=new inputList(pr.getId(), pr.getName(), pr.getPricein(),0, pr.getMemory(),pr.getProducer());
                     listiputArrayList.add(il);
@@ -2759,9 +2773,248 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 tblContentOrder.setModel(model);
         }
     }//GEN-LAST:event_tblOrderMouseClicked
-private long price(inputList il, int num){
+
+    private void txtOPSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOPSearchKeyReleased
+        DefaultTableModel model = null;
+        if(btngSearch2.isSelected(rbbyNameOP.getModel())){
+            if(searchByName(txtOPSearch.getText()).size()>0&&txtOPSearch.getText().length()>0){
+                model= modelproductOP(searchByName(txtOPSearch.getText()));
+                tblOPSearch.setModel(model);
+            }
+            else{
+                model=(DefaultTableModel) tblOPSearch.getModel();
+                model.setRowCount(0);
+                tblOPSearch.setModel(model);
+            }
+        }
+        if(btngSearch2.isSelected(rbByIDOP.getModel())){
+            if(searchByID(txtOPSearch.getText()).size()>0){
+                model = modelproductOP(searchByID(txtOPSearch.getText()));
+                tblOPSearch.setModel(model);
+            }
+            else{
+                model=(DefaultTableModel) tblOPSearch.getModel();
+                model.setRowCount(0);
+                tblOPSearch.setModel(model);
+            }
+        }
+    }//GEN-LAST:event_txtOPSearchKeyReleased
+
+    private void tblOPSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOPSearchMouseClicked
+        int index=tblOPSearch.getSelectedRow();
+        if(index>=0){
+            if(searchByName(txtOPSearch.getText()).size()>0&&txtOPSearch.getText().length()>0){
+            Product pr=searchByName(txtOPSearch.getText()).get(index);
+            int max=pr.getQuantity();
+            if(max>0){
+            btnAddOP.setEnabled(true);
+            sp1.setEnabled(true);
+            if(listoutputArrayList.size()==0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                        }
+                else{
+                    for (int i = 0; i < listoutputArrayList.size(); i++) {
+                        if(pr.getId().equals(listoutputArrayList.get(i).getId())){
+                            max=max-listoutputArrayList.get(i).getNumber();
+                            if(max>0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            }else{
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                }
+            }
+            }
+            if(btngSearch2.isSelected(rbByIDOP.getModel())){
+            Product pr=searchByID(txtOPSearch.getText()).get(index);
+            int max=pr.getQuantity();
+            if(max>0){
+                btnAddOP.setEnabled(true);
+                sp1.setEnabled(true);
+                if(listoutputArrayList.size()==0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                        }
+                else{
+                    for (int i = 0; i < listoutputArrayList.size(); i++) {
+                        if(pr.getId().equals(listoutputArrayList.get(i).getId())){
+                            max=max-listoutputArrayList.get(i).getNumber();
+                            if(max>0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            }else{
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                }
+            }  
+            
+            else{
+                tblOPSearch.clearSelection();
+                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+            }
+            }
+        }
+        else{
+            btnAddOP.setEnabled(false);
+        }
+            
+    }//GEN-LAST:event_tblOPSearchMouseClicked
+
+    private void txtcusphoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcusphoneKeyTyped
+        char c=evt.getKeyChar();
+        if(!(Character.isDigit(c)||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE)||txtcusphone.getText().length()>=11){
+            
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtcusphoneKeyTyped
+
+    private void txtPriceoutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceoutKeyTyped
+        char c=evt.getKeyChar();
+        if(!(Character.isDigit(c)||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE)||txtcusphone.getText().length()>=15){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPriceoutKeyTyped
+
+    private void txtPriceinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceinKeyTyped
+        char c=evt.getKeyChar();
+        if(!(Character.isDigit(c)||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE)||txtcusphone.getText().length()>=15){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPriceinKeyTyped
+
+    private void txtcusphoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcusphoneKeyReleased
+
+        if(txtcusphone.getText().length()>=10){
+                if(checkNamebyPhone(txtcusphone.getText())!=null){
+                    txtCusnameOp.setText(checkNamebyPhone(txtcusphone.getText()));
+                }
+                else{
+                     txtCusnameOp.setText(txtCusnameOp.getText());
+                }
+            }else{
+            txtCusnameOp.setText(txtCusnameOp.getText());
+        }
+    }//GEN-LAST:event_txtcusphoneKeyReleased
+
+    private void btnAddOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOPActionPerformed
+        index = tblOPSearch.getSelectedRow();
+        DefaultTableModel model;
+        if(index>=0&&searchByName(txtOPSearch.getText()).size()>0&&txtOPSearch.getText().length()>0){
+                Product pr=searchByName(txtOPSearch.getText()).get(index);
+                if(!checkInputList(listoutputArrayList,pr.getId())){
+                    int num=(int) sp1.getValue();
+                    String amount=String.valueOf(price(pr.getPriceout(), num));
+                    inputList il=new inputList(pr.getId(), pr.getName(), pr.getPriceout(),num, pr.getMemory(),pr.getProducer(),amount);
+                    listoutputArrayList.add(il);
+                    model = modelListProductOP(listoutputArrayList);
+                    tblListOP.setModel(model);
+                    int max=pr.getQuantity();
+                    for (int i = 0; i < listoutputArrayList.size(); i++) {
+                        if(pr.getId().equals(listoutputArrayList.get(i).getId())){
+                            max=max-listoutputArrayList.get(i).getNumber();
+                            if(max>0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            }else{
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+        }
+                else{
+                    inputList ip=listoutputArrayList.get(0);
+                        if(pr.getId().equals(ip.getId())){
+                            ip.setNumber((int)sp1.getValue()+ip.getNumber());
+                            model = modelListProductOP(listoutputArrayList);
+                            tblListOP.setModel(model);
+                            int max=pr.getQuantity();
+                            for (int i = 0; i < listoutputArrayList.size(); i++) {
+                            if(pr.getId().equals(listoutputArrayList.get(i).getId())){
+                            max=max-listoutputArrayList.get(i).getNumber();
+                            if(max>0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            }else{
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                    }
+                }
+            }
+            if(btngSearch2.isSelected(rbByIDOP.getModel())){
+            Product pr=searchByID(txtOPSearch.getText()).get(index);
+                if(!checkInputList(listoutputArrayList,pr.getId())){
+                    int num=(int) sp1.getValue();
+                    String amount=String.valueOf(price(pr.getPriceout(), num));
+                    inputList il=new inputList(pr.getId(), pr.getName(), pr.getPriceout(),num, pr.getMemory(),pr.getProducer(),amount);
+                    listoutputArrayList.add(il);
+                    model = modelListProductOP(listoutputArrayList);
+                    tblListOP.setModel(model);
+                    int max=pr.getQuantity();
+                    for (int i = 0; i < listoutputArrayList.size(); i++) {
+                        if(pr.getId().equals(listoutputArrayList.get(i).getId())){
+                            max=max-listoutputArrayList.get(i).getNumber();
+                            if(max>0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            }else{
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+        }
+                else{
+                    inputList ip=listoutputArrayList.get(0);
+                        if(pr.getId().equals(ip.getId())){
+                            ip.setNumber((int)sp1.getValue()+ip.getNumber());
+                            model = modelListProductOP(listoutputArrayList);
+                            tblListOP.setModel(model);
+                            int max=pr.getQuantity();
+                            for (int i = 0; i < listoutputArrayList.size(); i++) {
+                            if(pr.getId().equals(listoutputArrayList.get(i).getId())){
+                            max=max-listoutputArrayList.get(i).getNumber();
+                            if(max>0){
+                            sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
+                            JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
+                            ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            }else{
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }
+                    }
+                }
+        }
+        
+    }//GEN-LAST:event_btnAddOPActionPerformed
+private long price(String price1, int num){
     long price;
-    double d=Double.parseDouble(il.getPricein());
+    double d=Double.parseDouble(price1);
     price = (long) (num*d);
         return price;
 }
@@ -2800,6 +3053,7 @@ private long price(inputList il, int num){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddNew;
+    private javax.swing.JButton btnAddOP;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnBack1;
     private javax.swing.JButton btnBack2;
@@ -2812,7 +3066,6 @@ private long price(inputList il, int num){
     private javax.swing.JButton btnManage;
     private javax.swing.JButton btnManage3;
     private javax.swing.JButton btnNext;
-    private javax.swing.JTextField btnOPSearch;
     private javax.swing.JButton btnOutput;
     private javax.swing.JButton btnPlay;
     private javax.swing.JButton btnPrevious;
@@ -2823,8 +3076,8 @@ private long price(inputList il, int num){
     private javax.swing.JButton btnedit;
     private javax.swing.ButtonGroup btngSearch;
     private javax.swing.ButtonGroup btngSearch1;
+    private javax.swing.ButtonGroup btngSearch2;
     private javax.swing.JButton btnresetimg;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbGua;
     private javax.swing.JComboBox<String> cbGua2;
     private javax.swing.JComboBox<String> cbMemory;
@@ -2838,7 +3091,6 @@ private long price(inputList il, int num){
     private javax.swing.JLabel imgLeft;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2863,6 +3115,7 @@ private long price(inputList il, int num){
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2871,7 +3124,6 @@ private long price(inputList il, int num){
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -2884,8 +3136,6 @@ private long price(inputList il, int num){
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
@@ -2896,15 +3146,7 @@ private long price(inputList il, int num){
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel label11;
     private javax.swing.JLabel lbLoadImg;
     private javax.swing.JPanel pnAdd;
@@ -2920,29 +3162,42 @@ private long price(inputList il, int num){
     private javax.swing.JPanel pnMain;
     private javax.swing.JPanel pnManage;
     private javax.swing.JPanel pnOrderList;
+    private javax.swing.JPanel pnOrderOP;
+    private javax.swing.JRadioButton rbByIDOP;
     private javax.swing.JRadioButton rbId;
     private javax.swing.JRadioButton rbName;
     private javax.swing.JRadioButton rbProducer;
     private javax.swing.JRadioButton rbbyId1;
     private javax.swing.JRadioButton rbbyName1;
+    private javax.swing.JRadioButton rbbyNameOP;
+    private javax.swing.JSpinner sp1;
     private javax.swing.JTable tblConfirm;
     private javax.swing.JTable tblContentOrder;
+    private javax.swing.JTable tblListOP;
+    private javax.swing.JTable tblOPSearch;
     private javax.swing.JTable tblOrder;
     private javax.swing.JTable tblProduct;
     private javax.swing.JTable tblProduct1;
     private javax.swing.JTable tbllist;
     private javax.swing.JTextField totalprice;
+    private javax.swing.JTextField txtCusnameOp;
+    private javax.swing.JTextField txtDateOP;
+    private javax.swing.JTextField txtIDOP;
     private javax.swing.JTextField txtInfor2;
     private javax.swing.JLabel txtMusicname;
     private javax.swing.JTextField txtName2;
+    private javax.swing.JTextArea txtOPNote;
+    private javax.swing.JTextField txtOPSearch;
     private javax.swing.JTextField txtPriceIn2;
     private javax.swing.JTextField txtPriceOut2;
     private javax.swing.JTextField txtPricein;
     private javax.swing.JTextField txtPriceout;
     private javax.swing.JTextField txtProducer;
+    private javax.swing.JTextField txtRank;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearch1;
     private javax.swing.JTextPane txtaFunction;
+    private javax.swing.JTextField txtcusphone;
     private javax.swing.JTextField txtdatecf;
     private javax.swing.JTextField txtidcf;
     private javax.swing.JTextField txtimporter;
@@ -3162,8 +3417,7 @@ private long price(inputList il, int num){
         return model;
     }
 
-    private boolean checkInputList(String id) {
-       ArrayList<inputList> ar=listiputArrayList;
+    private boolean checkInputList(ArrayList<inputList> ar,String id) {
        for(inputList l:ar){
            if(l.getId().equals(id))
               return true; 
@@ -3204,7 +3458,7 @@ private long price(inputList il, int num){
                 v.add(l.getProducer());
                 v.add(l.getMemory());
                 v.add(l.getNumber());
-                v.add(l.getPricein());
+                v.add(l.getPrice());
                 model.addRow(v);
             }
             }
@@ -3215,7 +3469,8 @@ private long price(inputList il, int num){
         int a=0;
         for (int i = 0; i < list.size(); i++) {
             inputList il=list.get(i);
-            if(dt.addInputList(id, il.getId(), il.getNumber(), il.getPricein(),il.getProducer(), il.getMemory()))
+            String amount = String.valueOf(price(il.getPrice(), il.getNumber()));
+            if(dt.addInputList(id, il.getId(), il.getNumber(), amount,il.getProducer(), il.getMemory()))
                 a= a+1;
         }
         return a;
@@ -3295,7 +3550,64 @@ private long price(inputList il, int num){
             }
         }
         return name;
-    }       
+    }  
+    private DefaultTableModel modelproductOP(ArrayList<Product> pr){
+            DefaultTableModel model = (DefaultTableModel) tblOPSearch.getModel();
+            if(pr.size()>0){
+            model.getDataVector().clear();
+            for(Product p:pr){
+                Vector v =new Vector();
+                v.add(p.getId());
+                v.add(p.getName());
+                v.add(p.getProducer()); 
+                v.add(p.getQuantity());
+                v.add(p.getMemory());
+                v.add(p.getPriceout());
+                model.addRow(v);
+            }
+            }
+        return model;
+    }
+    private String createIdOP(){
+        String id=null;
+        if(dt.getOuputOrder().size()>0){
+            OutputOrder oo=dt.getOuputOrder().get(dt.getOuputOrder().size()-1);
+            int id1=Integer.parseInt(oo.getId().substring(3,oo.getId().length()))+1;
+            id="#IO"+String.valueOf(id1);
+        }
+        else{
+            id="#OO10001";
+        }
+        return id;
+    }
+    private String checkNamebyPhone(String phonenum){
+        ArrayList<Customer> cus=dt.getCustomer();
+        String name;
+        for(Customer c:cus){
+            if(c.getPhone().equals(phonenum)){
+                name=c.getName();
+                return name;
+            }
+        }
+        return null;
+    }
+    private DefaultTableModel modelListProductOP(ArrayList<inputList> oo){
+            DefaultTableModel model = (DefaultTableModel) tblListOP.getModel();
+            if(oo.size()>0){
+            model.getDataVector().clear();
+            for(inputList ol:oo){
+                Vector v =new Vector();
+                v.add(ol.getId());
+                v.add(ol.getName());
+                v.add(ol.getMemory());
+                v.add(ol.getNumber());
+                v.add(ol.getPrice());
+                v.add(ol.getAmount());
+                model.addRow(v);
+            }
+            }
+        return model;
+    }
 }
 
 
