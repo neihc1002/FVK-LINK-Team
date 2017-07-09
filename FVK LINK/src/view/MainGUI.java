@@ -5,6 +5,7 @@
  */
 package view;
 
+import Entity.CodeSale;
 import Entity.Customer;
 import Entity.InputOrder;
 import Entity.ListProductIO;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,8 +71,8 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     ArrayList<inputList> listiputArrayList = new ArrayList<>();
     ArrayList<inputList> listoutputArrayList = new ArrayList<>();
     Hashtable<Integer, inputList> listiputHashTable = new Hashtable<>();
-    private int x=25;
-    private int y=50;
+    private long amountall;
+    private long sale;
     public MainGUI() {
         initComponents();
         clock();
@@ -246,6 +248,17 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         jScrollPane8 = new javax.swing.JScrollPane();
         tblListOP = new javax.swing.JTable();
         jPanel15 = new javax.swing.JPanel();
+        btnPay = new javax.swing.JButton();
+        jLabel32 = new javax.swing.JLabel();
+        txtTotalAmount = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        txtGoodsAmount = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        drsale = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
+        txtcodesale = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        jLabel36 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         userdp = new javax.swing.JLabel();
@@ -1716,9 +1729,19 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
 
         btngSearch2.add(rbByIDOP);
         rbByIDOP.setText("by ID");
+        rbByIDOP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbByIDOPMouseClicked(evt);
+            }
+        });
 
         btngSearch2.add(rbbyNameOP);
         rbbyNameOP.setText("by Name");
+        rbbyNameOP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbbyNameOPMouseClicked(evt);
+            }
+        });
 
         btnAddOP.setText("ADD");
         btnAddOP.addActionListener(new java.awt.event.ActionListener() {
@@ -1734,7 +1757,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
@@ -1820,15 +1843,90 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
 
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 0, 255))); // NOI18N
 
+        btnPay.setText("PAY");
+
+        jLabel32.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel32.setText("Total Amount:");
+
+        txtTotalAmount.setEditable(false);
+        txtTotalAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        jLabel33.setText("Goods Amount:");
+
+        txtGoodsAmount.setEditable(false);
+        txtGoodsAmount.setText("0");
+
+        jLabel34.setText("Direct Sale:");
+
+        drsale.setEditable(false);
+        drsale.setText("0");
+
+        jLabel35.setText("Sale code");
+
+        jButton3.setText("use");
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 304, Short.MAX_VALUE)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel32)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel33)))
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(txtTotalAmount))
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtGoodsAmount)
+                        .addContainerGap())))
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel35)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addComponent(txtcodesale, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3))
+                    .addComponent(drsale)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel33)
+                    .addComponent(txtGoodsAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel34)
+                    .addComponent(drsale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel35)
+                    .addComponent(txtcodesale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout pnOrderOPLayout = new javax.swing.GroupLayout(pnOrderOP);
@@ -1981,7 +2079,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnContent, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(pnContent, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2782,6 +2880,8 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 tblOPSearch.setModel(model);
             }
             else{
+                sp1.setEnabled(false);
+                btnAddOP.setEnabled(false);
                 model=(DefaultTableModel) tblOPSearch.getModel();
                 model.setRowCount(0);
                 tblOPSearch.setModel(model);
@@ -2793,6 +2893,9 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 tblOPSearch.setModel(model);
             }
             else{
+                sp1.setEnabled(false);
+                btnAddOP.setEnabled(false);
+                tblOPSearch.clearSelection();
                 model=(DefaultTableModel) tblOPSearch.getModel();
                 model.setRowCount(0);
                 tblOPSearch.setModel(model);
@@ -2896,16 +2999,25 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     }//GEN-LAST:event_txtPriceinKeyTyped
 
     private void txtcusphoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcusphoneKeyReleased
-
-        if(txtcusphone.getText().length()>=10){
+            if(txtcusphone.getText().length()>0){
                 if(checkNamebyPhone(txtcusphone.getText())!=null){
-                    txtCusnameOp.setText(checkNamebyPhone(txtcusphone.getText()));
+                    Customer cus =checkNamebyPhone(txtcusphone.getText());
+                    txtCusnameOp.setText(cus.getName());
+                    txtCusnameOp.setEditable(false);
+                    txtRank.setText(cus.getRank());
+                    if(listoutputArrayList.size()>0){
+                    sale=Long.valueOf(drsale(String.valueOf(amountall),cus.getRank()));
+                    drsale.setText(String.valueOf(sale));
+                    txtTotalAmount.setText(String.valueOf(amountall-sale));
+                    }else{
+                        drsale.setText("0");
+                    }
                 }
                 else{
-                     txtCusnameOp.setText(txtCusnameOp.getText());
+                    txtCusnameOp.setText("");
+                    txtCusnameOp.setEditable(true);
+                    txtRank.setText("");
                 }
-            }else{
-            txtCusnameOp.setText(txtCusnameOp.getText());
         }
     }//GEN-LAST:event_txtcusphoneKeyReleased
 
@@ -2921,45 +3033,54 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     listoutputArrayList.add(il);
                     model = modelListProductOP(listoutputArrayList);
                     tblListOP.setModel(model);
+                    txtGoodsAmount.setText(totalamount(listoutputArrayList));
+                    amountall=Long.valueOf(totalamount(listoutputArrayList));
+                    txtTotalAmount.setText(String.valueOf(amountall));
                     int max=pr.getQuantity();
-                    for (int i = 0; i < listoutputArrayList.size(); i++) {
-                        if(pr.getId().equals(listoutputArrayList.get(i).getId())){
-                            max=max-listoutputArrayList.get(i).getNumber();
                             if(max>0){
                             sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
                             JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
                             ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            tblOPSearch.clearSelection();
+                            sp1.setEnabled(false);
                             }else{
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
-                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                                tblOPSearch.clearSelection();
+                                
                             }
-                        }
-                    }
+                        
+                    
         }
                 else{
-                    inputList ip=listoutputArrayList.get(0);
-                        if(pr.getId().equals(ip.getId())){
+                            if(checkidSBNOP(pr.getId())!=null){
+                                inputList ip = checkidSBNOP(pr.getId());
                             ip.setNumber((int)sp1.getValue()+ip.getNumber());
+                            ip.setAmount(String.valueOf(price(pr.getPriceout(), ip.getNumber())));
                             model = modelListProductOP(listoutputArrayList);
                             tblListOP.setModel(model);
+                            txtGoodsAmount.setText(totalamount(listoutputArrayList));
+                            amountall=Long.valueOf(totalamount(listoutputArrayList))-sale;
+                            txtTotalAmount.setText(String.valueOf(amountall));
                             int max=pr.getQuantity();
-                            for (int i = 0; i < listoutputArrayList.size(); i++) {
-                            if(pr.getId().equals(listoutputArrayList.get(i).getId())){
-                            max=max-listoutputArrayList.get(i).getNumber();
+                            max=max-ip.getNumber();
                             if(max>0){
                             sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
                             JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
                             ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
-                            }else{
+                            tblOPSearch.clearSelection();
+                            sp1.setEnabled(false);
+                            }
+                            else{
+                                tblOPSearch.clearSelection();
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
                                 JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
                             }
-                        }
+                        
                     }
                     }
-                }
             }
             if(btngSearch2.isSelected(rbByIDOP.getModel())){
             Product pr=searchByID(txtOPSearch.getText()).get(index);
@@ -2970,48 +3091,68 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     listoutputArrayList.add(il);
                     model = modelListProductOP(listoutputArrayList);
                     tblListOP.setModel(model);
+                    txtGoodsAmount.setText(totalamount(listoutputArrayList));
+                    amountall=Long.valueOf(totalamount(listoutputArrayList));
+                    txtTotalAmount.setText(String.valueOf(amountall));
                     int max=pr.getQuantity();
-                    for (int i = 0; i < listoutputArrayList.size(); i++) {
-                        if(pr.getId().equals(listoutputArrayList.get(i).getId())){
-                            max=max-listoutputArrayList.get(i).getNumber();
                             if(max>0){
                             sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
                             JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
                             ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            tblOPSearch.clearSelection();
+                            sp1.setEnabled(false);
                             }else{
+                                tblOPSearch.clearSelection();
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
                                 JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
                             }
-                        }
-                    }
+                        
+                    
         }
                 else{
-                    inputList ip=listoutputArrayList.get(0);
-                        if(pr.getId().equals(ip.getId())){
+                    if(checkidSBNOP(pr.getId())!=null){
+                            inputList ip = checkidSBNOP(pr.getId());
                             ip.setNumber((int)sp1.getValue()+ip.getNumber());
+                            ip.setAmount(String.valueOf(price(pr.getPriceout(), ip.getNumber())));
                             model = modelListProductOP(listoutputArrayList);
                             tblListOP.setModel(model);
+                            txtGoodsAmount.setText(totalamount(listoutputArrayList));
+                            amountall=Long.valueOf(totalamount(listoutputArrayList))-sale;
+                            txtTotalAmount.setText(String.valueOf(amountall));
                             int max=pr.getQuantity();
-                            for (int i = 0; i < listoutputArrayList.size(); i++) {
-                            if(pr.getId().equals(listoutputArrayList.get(i).getId())){
-                            max=max-listoutputArrayList.get(i).getNumber();
+                            max=max-ip.getNumber();
                             if(max>0){
                             sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
                             JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
                             ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
+                            tblOPSearch.clearSelection();
+                            sp1.setEnabled(false);
                             }else{
+                                tblOPSearch.clearSelection();
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
                                 JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
                             }
-                        }
-                    }
+                        
+                    
                     }
                 }
         }
         
     }//GEN-LAST:event_btnAddOPActionPerformed
+
+    private void rbByIDOPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbByIDOPMouseClicked
+        DefaultTableModel model=(DefaultTableModel) tblOPSearch.getModel();
+                model.setRowCount(0);
+                tblOPSearch.setModel(model);
+    }//GEN-LAST:event_rbByIDOPMouseClicked
+
+    private void rbbyNameOPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbbyNameOPMouseClicked
+       DefaultTableModel model=(DefaultTableModel) tblOPSearch.getModel();
+       model.setRowCount(0);
+       tblOPSearch.setModel(model);
+    }//GEN-LAST:event_rbbyNameOPMouseClicked
 private long price(String price1, int num){
     long price;
     double d=Double.parseDouble(price1);
@@ -3067,6 +3208,7 @@ private long price(String price1, int num){
     private javax.swing.JButton btnManage3;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnOutput;
+    private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPlay;
     private javax.swing.JButton btnPrevious;
     private javax.swing.JButton btnSearch;
@@ -3088,9 +3230,11 @@ private long price(String price1, int num){
     private javax.swing.JComboBox<String> cbmoney;
     private javax.swing.JComboBox<String> cbmoney2;
     private javax.swing.JLabel clock;
+    private javax.swing.JTextField drsale;
     private javax.swing.JLabel imgLeft;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3116,6 +3260,11 @@ private long price(String price1, int num){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -3182,6 +3331,7 @@ private long price(String price1, int num){
     private javax.swing.JTextField totalprice;
     private javax.swing.JTextField txtCusnameOp;
     private javax.swing.JTextField txtDateOP;
+    private javax.swing.JTextField txtGoodsAmount;
     private javax.swing.JTextField txtIDOP;
     private javax.swing.JTextField txtInfor2;
     private javax.swing.JLabel txtMusicname;
@@ -3196,7 +3346,9 @@ private long price(String price1, int num){
     private javax.swing.JTextField txtRank;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearch1;
+    private javax.swing.JTextField txtTotalAmount;
     private javax.swing.JTextPane txtaFunction;
+    private javax.swing.JTextField txtcodesale;
     private javax.swing.JTextField txtcusphone;
     private javax.swing.JTextField txtdatecf;
     private javax.swing.JTextField txtidcf;
@@ -3580,13 +3732,13 @@ private long price(String price1, int num){
         }
         return id;
     }
-    private String checkNamebyPhone(String phonenum){
+    private Customer checkNamebyPhone(String phonenum){
         ArrayList<Customer> cus=dt.getCustomer();
-        String name;
+        Customer ctm = new Customer();
         for(Customer c:cus){
             if(c.getPhone().equals(phonenum)){
-                name=c.getName();
-                return name;
+                ctm=c;
+                return c;
             }
         }
         return null;
@@ -3608,6 +3760,58 @@ private long price(String price1, int num){
             }
         return model;
     }
+
+    private inputList checkidSBNOP(String id) {
+        inputList ip = new inputList();
+        for (int i = 0; i <listoutputArrayList.size(); i++) {
+            if(listoutputArrayList.get(i).getId().equals(id)){
+                ip=listoutputArrayList.get(i);
+                return ip;
+            }        
+        }
+        return null;
+    }
+    private String totalamount(ArrayList<inputList> il){
+        String totalamount = "0";
+        long  amount=0;
+        for(inputList i:il){
+            amount=amount+Long.parseLong(i.getAmount());
+            totalamount=String.valueOf(amount);
+        }
+        return totalamount;
+    }
+    private String checkCodeSale(String code){
+        ArrayList<CodeSale> cs=dt.getCodeSale();
+        for(CodeSale c:cs){
+            if(c.getCode().equals(code)){
+                return c.getPrice();
+            }
+        }
+        return "0";
+    }
+    private String drsale(String tamount,String rank){
+        if(rank.equalsIgnoreCase("vip")){
+            long drsale=Long.parseLong(tamount)/100*10;
+            return String.valueOf(drsale);
+        }
+        else if(rank.equalsIgnoreCase("pro")){
+            long drsale=Long.parseLong(tamount)/100*5;
+            return String.valueOf(drsale);
+        }
+        return "0";   
+    }
+    
+
+    private String randomCodeSale(int length) {
+    Random r = new Random();
+    StringBuilder sb = new StringBuilder();
+    for(int i = 0; i < length; i++) {
+        char c = (char)(r.nextInt((int)(Character.MAX_VALUE)));
+        sb.append(c);
+    }
+    return sb.toString();
+    }
+
 }
 
 

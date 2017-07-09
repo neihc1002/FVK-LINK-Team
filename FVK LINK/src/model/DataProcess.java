@@ -5,12 +5,14 @@
  */
 package model;
 
+import Entity.CodeSale;
 import Entity.Customer;
 import Entity.InputOrder;
 import Entity.ListProductIO;
 import Entity.OutputOrder;
 import Entity.Producer;
 import Entity.Product;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -340,5 +342,21 @@ public class DataProcess implements Serializable{
             Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;  
+    }
+    public ArrayList<CodeSale> getCodeSale(){
+        ArrayList<CodeSale> list=new ArrayList<>();
+        String sql="SELECT * FROM tblcodesale";
+        try {
+            Statement st = getConnection().createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            while(rs.next()){
+                String code=rs.getString(1);
+                String price=rs.getString(2);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+        
     }
 }
