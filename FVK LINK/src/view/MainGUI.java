@@ -254,10 +254,10 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         jLabel33 = new javax.swing.JLabel();
         txtGoodsAmount = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
-        drsale = new javax.swing.JTextField();
+        txtcuspay = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
         txtcodesale = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnUsecode = new javax.swing.JButton();
         jLabel36 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -1844,6 +1844,11 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 0, 255))); // NOI18N
 
         btnPay.setText("PAY");
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayActionPerformed(evt);
+            }
+        });
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel32.setText("Total Amount:");
@@ -1856,14 +1861,28 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
         txtGoodsAmount.setEditable(false);
         txtGoodsAmount.setText("0");
 
-        jLabel34.setText("Direct Sale:");
+        jLabel34.setText("Customer pay:");
 
-        drsale.setEditable(false);
-        drsale.setText("0");
+        txtcuspay.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcuspayKeyTyped(evt);
+            }
+        });
 
-        jLabel35.setText("Sale code");
+        jLabel35.setText("Giftcode");
 
-        jButton3.setText("use");
+        txtcodesale.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcodesaleKeyTyped(evt);
+            }
+        });
+
+        btnUsecode.setText("use");
+        btnUsecode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsecodeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -1873,51 +1892,47 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel15Layout.createSequentialGroup()
+                .addComponent(jLabel32)
+                .addGap(20, 20, 20)
+                .addComponent(txtTotalAmount))
+            .addGroup(jPanel15Layout.createSequentialGroup()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel32)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel33)))
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(txtTotalAmount))
-                    .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtGoodsAmount)
-                        .addContainerGap())))
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel35)
-                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addComponent(txtcodesale, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3))
-                    .addComponent(drsale)
-                    .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel33)
+                            .addComponent(jLabel35)
+                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel15Layout.createSequentialGroup()
+                                .addComponent(txtcodesale, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUsecode))
+                            .addComponent(txtGoodsAmount)
+                            .addComponent(txtcuspay))))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(17, 17, 17)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(txtGoodsAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34)
-                    .addComponent(drsale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel35)
                     .addComponent(txtcodesale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel35)
+                    .addComponent(btnUsecode, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtcuspay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel36)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2079,7 +2094,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnContent, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(pnContent, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2928,7 +2943,6 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                             }else{
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
-                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }
@@ -2957,7 +2971,6 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                             }else{
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
-                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }
@@ -2966,7 +2979,6 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
             
             else{
                 tblOPSearch.clearSelection();
-                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
             }
             }
         }
@@ -2979,7 +2991,6 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     private void txtcusphoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcusphoneKeyTyped
         char c=evt.getKeyChar();
         if(!(Character.isDigit(c)||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE)||txtcusphone.getText().length()>=11){
-            
             evt.consume();
         }
     }//GEN-LAST:event_txtcusphoneKeyTyped
@@ -3007,10 +3018,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     txtRank.setText(cus.getRank());
                     if(listoutputArrayList.size()>0){
                     sale=Long.valueOf(drsale(String.valueOf(amountall),cus.getRank()));
-                    drsale.setText(String.valueOf(sale));
                     txtTotalAmount.setText(String.valueOf(amountall-sale));
-                    }else{
-                        drsale.setText("0");
                     }
                 }
                 else{
@@ -3024,9 +3032,15 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
     private void btnAddOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOPActionPerformed
         index = tblOPSearch.getSelectedRow();
         DefaultTableModel model;
+        String rank = null;
+        if(checkNamebyPhone(txtcusphone.getText())!=null)
+            rank=checkNamebyPhone(txtcusphone.getText()).getRank();
+        else
+            rank="";
         if(index>=0&&searchByName(txtOPSearch.getText()).size()>0&&txtOPSearch.getText().length()>0){
                 Product pr=searchByName(txtOPSearch.getText()).get(index);
-                if(!checkInputList(listoutputArrayList,pr.getId())){
+                int max=pr.getQuantity();
+                if(!checkInputList(listoutputArrayList,pr.getId())&&max>0){
                     int num=(int) sp1.getValue();
                     String amount=String.valueOf(price(pr.getPriceout(), num));
                     inputList il=new inputList(pr.getId(), pr.getName(), pr.getPriceout(),num, pr.getMemory(),pr.getProducer(),amount);
@@ -3034,9 +3048,8 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     model = modelListProductOP(listoutputArrayList);
                     tblListOP.setModel(model);
                     txtGoodsAmount.setText(totalamount(listoutputArrayList));
-                    amountall=Long.valueOf(totalamount(listoutputArrayList));
+                    amountall=Long.valueOf(totalamount(listoutputArrayList))-Long.valueOf(drsale(totalamount(listoutputArrayList), rank));
                     txtTotalAmount.setText(String.valueOf(amountall));
-                    int max=pr.getQuantity();
                             if(max>0){
                             sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
                             JFormattedTextField txt = ((JSpinner.NumberEditor) sp1.getEditor()).getTextField();
@@ -3048,12 +3061,9 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                                 btnAddOP.setEnabled(false);
                                 sp1.setEnabled(false);
                                 tblOPSearch.clearSelection();
-                                
-                            }
-                        
-                    
+                            }              
         }
-                else{
+                else if(checkInputList(listoutputArrayList,pr.getId())&&max>0){
                             if(checkidSBNOP(pr.getId())!=null){
                                 inputList ip = checkidSBNOP(pr.getId());
                             ip.setNumber((int)sp1.getValue()+ip.getNumber());
@@ -3061,9 +3071,8 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                             model = modelListProductOP(listoutputArrayList);
                             tblListOP.setModel(model);
                             txtGoodsAmount.setText(totalamount(listoutputArrayList));
-                            amountall=Long.valueOf(totalamount(listoutputArrayList))-sale;
+                            amountall=Long.valueOf(totalamount(listoutputArrayList))-Long.valueOf(drsale(totalamount(listoutputArrayList), checkNamebyPhone(txtcusphone.getText()).getRank()));
                             txtTotalAmount.setText(String.valueOf(amountall));
-                            int max=pr.getQuantity();
                             max=max-ip.getNumber();
                             if(max>0){
                             sp1.setModel(new SpinnerNumberModel(1, 1, max, 1));
@@ -3080,7 +3089,12 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                             }
                         
                     }
-                    }
+                    }else{
+                                tblOPSearch.clearSelection();
+                                btnAddOP.setEnabled(false);
+                                sp1.setEnabled(false);
+                                JOptionPane.showMessageDialog(this, "Are out of stock!", "Notification", JOptionPane.ERROR_MESSAGE);
+                }
             }
             if(btngSearch2.isSelected(rbByIDOP.getModel())){
             Product pr=searchByID(txtOPSearch.getText()).get(index);
@@ -3092,7 +3106,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                     model = modelListProductOP(listoutputArrayList);
                     tblListOP.setModel(model);
                     txtGoodsAmount.setText(totalamount(listoutputArrayList));
-                    amountall=Long.valueOf(totalamount(listoutputArrayList));
+                    amountall=Long.valueOf(totalamount(listoutputArrayList))-Long.valueOf(drsale(totalamount(listoutputArrayList), checkNamebyPhone(txtcusphone.getText()).getRank()));
                     txtTotalAmount.setText(String.valueOf(amountall));
                     int max=pr.getQuantity();
                             if(max>0){
@@ -3118,7 +3132,7 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
                             model = modelListProductOP(listoutputArrayList);
                             tblListOP.setModel(model);
                             txtGoodsAmount.setText(totalamount(listoutputArrayList));
-                            amountall=Long.valueOf(totalamount(listoutputArrayList))-sale;
+                            amountall=Long.valueOf(totalamount(listoutputArrayList))-Long.valueOf(drsale(totalamount(listoutputArrayList), checkNamebyPhone(txtcusphone.getText()).getRank()));
                             txtTotalAmount.setText(String.valueOf(amountall));
                             int max=pr.getQuantity();
                             max=max-ip.getNumber();
@@ -3153,6 +3167,104 @@ public class MainGUI extends javax.swing.JFrame implements Serializable{
        model.setRowCount(0);
        tblOPSearch.setModel(model);
     }//GEN-LAST:event_rbbyNameOPMouseClicked
+
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        if(!checkEmptyOP()){
+        String cusname=txtCusnameOp.getText();
+        String phone = txtcusphone.getText();
+        String idcus;
+        String id=txtIDOP.getText();
+        String date = txtDateOP.getText();
+        int quantity=listoutputArrayList.size();
+        long csale=0;
+        String status="unused";
+        if(checkCodeSale(txtcodesale.getText())!=null){
+            csale = Long.valueOf(checkCodeSale(txtcodesale.getText()).getPrice());
+            status="used";
+        }
+        String sale = String.valueOf(drsale(txtGoodsAmount.getText(),txtRank.getText()))+csale;
+        String totalamount=txtTotalAmount.getText();
+        String note=txtOPNote.getText();
+        String cuspay=txtcuspay.getText();
+        String idcusop;
+         if(dt.getCustomer().size()>0){
+           Customer cus=dt.getCustomer().get(dt.getCustomer().size()-1);
+           int id1 =Integer.parseInt(cus.getId().substring(3,cus.getId().length()))+1;
+           idcus="#CM"+String.valueOf(id1); 
+        }else{
+             idcus="#CM100001";
+         }
+         if(checkNamebyPhone(phone)!=null){
+            idcusop=checkNamebyPhone(phone).getId();
+        }
+         else
+             idcusop=idcus;
+         if(!btnUsecode.isEnabled()){
+             dt.updateStatusCS(txtcodesale.getText(), status);
+         }
+         if(addCustomer(idcus, phone, cusname, txtTotalAmount.getText())){
+             if(dt.addOPOrder(id, idcusop, date, quantity, sale, totalamount, note, cuspay)){
+                 if(addOPL(listoutputArrayList, id)==quantity){
+                    for (int i = 0; i < listoutputArrayList.size(); i++) {
+                    inputList il=listoutputArrayList.get(i);
+                    if(reduceQuantity(il.getId(), il.getNumber())){
+                        JOptionPane.showMessageDialog(this, "Success!", "Notification", JOptionPane.PLAIN_MESSAGE);
+                        listoutputArrayList.removeAll(listoutputArrayList);
+                        DefaultTableModel model=(DefaultTableModel) tblListOP.getModel();
+                        model.setRowCount(0);
+                        tblListOP.setModel(model);
+                        txtIDOP.setText(createIdOP());
+                        txtDateOP.setText(String.valueOf(date()));
+                        txtTotalAmount.setText("");
+                        txtGoodsAmount.setText("");
+                        txtCusnameOp.setText("");
+                        txtcusphone.setText("");
+                        txtRank.setText("");
+                        txtcodesale.setText("");
+                        txtcuspay.setText("");
+                    }
+                }
+                 }else
+                     JOptionPane.showMessageDialog(this, "ERROR1!", "Notification", JOptionPane.ERROR_MESSAGE);
+             }else
+                JOptionPane.showMessageDialog(this, "ERROR2!", "Notification", JOptionPane.ERROR_MESSAGE);
+             
+         }else
+             JOptionPane.showMessageDialog(this, "ERROR3!", "Notification", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnPayActionPerformed
+
+    private void txtcuspayKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcuspayKeyTyped
+        char c=evt.getKeyChar();
+        if(!(Character.isDigit(c)||c==KeyEvent.VK_BACK_SPACE||c==KeyEvent.VK_DELETE)||txtcuspay.getText().length()>=15){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtcuspayKeyTyped
+
+    private void txtcodesaleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcodesaleKeyTyped
+        char c=evt.getKeyChar();
+        if(txtcodesale.getText().length()>=6){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtcodesaleKeyTyped
+
+    private void btnUsecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsecodeActionPerformed
+        if(checkCodeSale(txtcodesale.getText())==null){
+            JOptionPane.showMessageDialog(this, "Giftcode is not exits!", "Notification", JOptionPane.ERROR_MESSAGE);
+        }else{
+            if(checkCodeSale(txtcodesale.getText()).getStatus().equalsIgnoreCase("Unused")){
+            JOptionPane.showMessageDialog(this, "Giftcode: "+checkCodeSale(txtcodesale.getText()).getPrice(), "Notification", JOptionPane.PLAIN_MESSAGE);
+            amountall = amountall-Long.valueOf(checkCodeSale(txtcodesale.getText()).getPrice());
+            txtTotalAmount.setText(String.valueOf(amountall));
+            btnUsecode.setEnabled(false);
+            txtcodesale.setEditable(false);
+            }else{
+                JOptionPane.showMessageDialog(this, "Giftcode is used!", "Notification", JOptionPane.ERROR_MESSAGE);
+                txtcodesale.setText("");
+            }
+        }
+        
+    }//GEN-LAST:event_btnUsecodeActionPerformed
 private long price(String price1, int num){
     long price;
     double d=Double.parseDouble(price1);
@@ -3214,6 +3326,7 @@ private long price(String price1, int num){
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearch1;
     private javax.swing.JButton btnSelectImage2;
+    private javax.swing.JButton btnUsecode;
     private javax.swing.JButton btnchangeimg;
     private javax.swing.JButton btnedit;
     private javax.swing.ButtonGroup btngSearch;
@@ -3230,11 +3343,9 @@ private long price(String price1, int num){
     private javax.swing.JComboBox<String> cbmoney;
     private javax.swing.JComboBox<String> cbmoney2;
     private javax.swing.JLabel clock;
-    private javax.swing.JTextField drsale;
     private javax.swing.JLabel imgLeft;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3349,6 +3460,7 @@ private long price(String price1, int num){
     private javax.swing.JTextField txtTotalAmount;
     private javax.swing.JTextPane txtaFunction;
     private javax.swing.JTextField txtcodesale;
+    private javax.swing.JTextField txtcuspay;
     private javax.swing.JTextField txtcusphone;
     private javax.swing.JTextField txtdatecf;
     private javax.swing.JTextField txtidcf;
@@ -3725,7 +3837,7 @@ private long price(String price1, int num){
         if(dt.getOuputOrder().size()>0){
             OutputOrder oo=dt.getOuputOrder().get(dt.getOuputOrder().size()-1);
             int id1=Integer.parseInt(oo.getId().substring(3,oo.getId().length()))+1;
-            id="#IO"+String.valueOf(id1);
+            id="#OO"+String.valueOf(id1);
         }
         else{
             id="#OO10001";
@@ -3780,14 +3892,14 @@ private long price(String price1, int num){
         }
         return totalamount;
     }
-    private String checkCodeSale(String code){
+    private CodeSale checkCodeSale(String code){
         ArrayList<CodeSale> cs=dt.getCodeSale();
         for(CodeSale c:cs){
             if(c.getCode().equals(code)){
-                return c.getPrice();
+                return c;
             }
         }
-        return "0";
+        return null;
     }
     private String drsale(String tamount,String rank){
         if(rank.equalsIgnoreCase("vip")){
@@ -3810,6 +3922,92 @@ private long price(String price1, int num){
         sb.append(c);
     }
     return sb.toString();
+    }
+    private boolean addCustomer(String id,String phone, String name, String money){
+        String rank;
+        if(checkNamebyPhone(phone)==null){
+            if(Long.valueOf(money)>100000000){
+                rank="VIP";
+            }
+            else if(Long.valueOf(money)>50000000)
+                rank="PRO";
+            else
+                rank="normal";
+            if(dt.addCustomer(id, name, phone, money, rank))
+                return true;
+        }else{
+            Customer cus=checkNamebyPhone(phone);
+            money=String.valueOf(Long.valueOf(cus.getTotal())+Long.valueOf(money));
+            if(Long.valueOf(money)>100000000){
+                rank="VIP";
+            }
+            else if(Long.valueOf(money)>50000000)
+                rank="PRO";
+            else
+                rank="normal";
+            if(dt.saveCus(cus.getId(), money, rank))
+                return true;
+        }
+        return false;
+    }
+private boolean checkEmptyOP(){
+    if(txtCusnameOp.getText().length()==0){
+        JOptionPane.showMessageDialog(this, "Customer name is can't blank!", "Notification", JOptionPane.ERROR_MESSAGE);
+        txtCusnameOp.requestFocus();
+        return true;
+    }
+    if(txtcusphone.getText().length()==0){
+        JOptionPane.showMessageDialog(this, "Customer phone numeber is can't blank!", "Notification", JOptionPane.ERROR_MESSAGE);
+        txtcusphone.requestFocus();
+        return true;
+    }
+    if(txtcusphone.getText().length()<10){
+        JOptionPane.showMessageDialog(this, "Customer phone number minimum is 10!", "Notification", JOptionPane.ERROR_MESSAGE);
+        txtcusphone.requestFocus();
+        return true;
+    }
+    if(listoutputArrayList.size()==0){
+        JOptionPane.showMessageDialog(this, "Please choose product!", "Notification", JOptionPane.ERROR_MESSAGE);
+        return true;
+    }
+    if(txtcuspay.getText().length()==0){
+        JOptionPane.showMessageDialog(this, "Customer pay is can't blank!", "Notification", JOptionPane.ERROR_MESSAGE);
+        txtcuspay.requestFocus();
+        return true;
+    }
+    if(Long.valueOf(txtcuspay.getText())<Long.valueOf(txtTotalAmount.getText())){
+        JOptionPane.showMessageDialog(this, "Customer pay must be greater than total amount!", "Notification", JOptionPane.ERROR_MESSAGE);
+        txtCusnameOp.requestFocus();
+        return true;
+    }
+    
+    
+        return false;
+}
+private int addOPL(ArrayList<inputList> list, String id) {
+        int a=0;
+        for (int i = 0; i < list.size(); i++) {
+            inputList il=list.get(i);
+            String amount = String.valueOf(price(il.getPrice(), il.getNumber()));
+            if(dt.addOutputList(id, il.getId(), il.getNumber(), amount))
+                a= a+1;
+        }
+        return a;
+    }
+private boolean reduceQuantity(String id, int num){
+        for (int i = 0; i < dt.getProduct().size(); i++) {
+            Product pr=dt.getProduct().get(i);
+            if(pr.getId().equals(id)){
+                try {
+                    dt.updateQuan(pr.getQuantity()-num, id);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return true;
+            }
+            
+        }
+        return false;
     }
 
 }

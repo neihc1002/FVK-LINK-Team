@@ -352,11 +352,100 @@ public class DataProcess implements Serializable{
             while(rs.next()){
                 String code=rs.getString(1);
                 String price=rs.getString(2);
+                String status=rs.getString(3);
+                CodeSale cs=new CodeSale(code, price, status);
+                list.add(cs);  
             }
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
         
+    }
+    public boolean addCustomer(String id, String name, String phone, String money, String rank){
+        int result = 0;
+        String sql="INSERT INTO tblCustomer VALUES (?,?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, id);
+            prst.setString(2, name);
+            prst.setString(3, phone);
+            prst.setString(4, money);
+            prst.setString(5, rank);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
+    }
+    public boolean saveCus(String id, String money, String rank){
+        int result=0;
+        String sql = "UPDATE tblCustomer SET _total=?,_rank=?  WHERE _id=?";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, money);
+            prst.setString(2, rank);
+            prst.setString(3, id);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result>0;
+    }
+    public boolean addOPOrder(String id,String idcus, String date, int quantity, String sale, String totalamount,String note, String cuspay){
+        int result = 0;
+        String sql="INSERT INTO tblOutputOrder VALUES (?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, id);
+            prst.setString(2, idcus);
+            prst.setString(3, date);
+            prst.setInt(4, quantity);
+            prst.setString(5, sale);
+            prst.setString(6, totalamount);
+            prst.setString(7, note);
+            prst.setString(8, cuspay);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
+    }
+    public boolean addOutputList(String idOrder, String idPr, int quantity, String amount){
+        int result = 0;
+        String sql="INSERT INTO tblOutputList VALUES (?,?,?,?)";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, idOrder);
+            prst.setString(2, idPr);
+            prst.setInt(3, quantity);
+            prst.setString(4, amount);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result>0;
+    }
+    public boolean updateStatusCS(String code, String status){
+        int result=0;
+        String sql = "UPDATE tblcodesale SET _status=? WHERE _code=?";
+        try {
+            PreparedStatement prst=getConnection().prepareStatement(sql);
+            prst.setString(1, status);
+            prst.setString(2, code);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result>0;
     }
 }

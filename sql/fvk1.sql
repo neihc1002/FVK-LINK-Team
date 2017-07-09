@@ -62,8 +62,8 @@ _totalPrice varchar(15),
 _quantityProduct int
 )
 SELECT *FROM tblInputOrder
-DROP TABLE tblInputOrder
-DROP TABLE  tblInputList
+DROP TABLE tblCustomer
+DROP TABLE  tblOutputOrder
 SELECT *FROM tblInputList WHERE _idOrder='#IO10002'
 CREATE TABLE tblCustomer
 (
@@ -90,3 +90,11 @@ _idPr varchar(10) references tblProduct (_id) NOT NULL,
 _quantity int NOT NULL,
 _amount varchar(15)
 )
+DROP TABLE tblcodesale
+CREATE TABLE tblcodesale
+(
+_code varchar(10) PRIMARY KEY,
+_price varchar(15) NOT NULL,
+_status varchar(10) NOT NULL
+)
+INSERT INTO tblcodesale VALUES('123455','200000','used')
