@@ -309,7 +309,8 @@ public class DataProcess implements Serializable{
                 String sale = rs.getString(5);
                 String totalprice = rs.getString(6);
                 String note = rs.getString(7);
-                OutputOrder oo = new OutputOrder(id, idcus, date, quantity, sale, totalprice, note);
+                String cuspay=rs.getString(8);
+                OutputOrder oo = new OutputOrder(id, idcus, date, quantity, sale, totalprice, note,cuspay);
                 list.add(oo);
             }
             rs.close();
@@ -447,5 +448,26 @@ public class DataProcess implements Serializable{
             Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result>0;
+    }
+    public ArrayList<ListProductIO> getContentOPOrder(String idOP){
+        ArrayList<ListProductIO> list = new ArrayList<>();
+        String sql = "SELECT * FROM tblOutputList WHERE _idOP=?";
+        try {
+            PreparedStatement prst = getConnection().prepareStatement(sql);
+            prst.setString(1, idOP);
+            ResultSet rs = prst.executeQuery();
+            while(rs.next()){
+                String idO=rs.getString(1);
+                String id=rs.getString(2);
+                int quantity = rs.getInt(3);
+                String price = rs.getString(4);
+                ListProductIO lpio= new ListProductIO(idO, id, quantity, price);
+                list.add(lpio);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;  
     }
 }

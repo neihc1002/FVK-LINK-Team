@@ -17,6 +17,13 @@ public class ListProductIO {
     private String producer;
     private String memory;
 
+    public ListProductIO(String idIO, String idPr, int Quantity, String price) {
+        this.idIO = idIO;
+        this.idPr = idPr;
+        this.Quantity = Quantity;
+        this.price = price;
+    }
+
     public ListProductIO(String idIO, String idPr, int Quantity, String price, String producer, String memory) {
         this.idIO = idIO;
         this.idPr = idPr;

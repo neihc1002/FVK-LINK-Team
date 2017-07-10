@@ -98,3 +98,4 @@ _price varchar(15) NOT NULL,
 _status varchar(10) NOT NULL
 )
 INSERT INTO tblcodesale VALUES('123455','200000','used')
+DELETE FROM tbl WHERE

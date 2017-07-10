@@ -17,6 +17,26 @@ public class OutputOrder {
     private String sale;
     private String totalaumount;
     private String note;
+    private String cuspay;
+
+    public OutputOrder(String id, String idcus, String date, int quan, String sale, String totalaumount, String note, String cuspay) {
+        this.id = id;
+        this.idcus = idcus;
+        this.date = date;
+        this.quan = quan;
+        this.sale = sale;
+        this.totalaumount = totalaumount;
+        this.note = note;
+        this.cuspay = cuspay;
+    }
+
+    public String getCuspay() {
+        return cuspay;
+    }
+
+    public void setCuspay(String cuspay) {
+        this.cuspay = cuspay;
+    }
 
     public OutputOrder(String id, String idcus, String date, int quan, String sale, String totalaumount, String note) {
         this.id = id;
