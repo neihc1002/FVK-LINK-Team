@@ -470,4 +470,32 @@ public class DataProcess implements Serializable{
         }
         return list;  
     }
+    public boolean deleteOutputOrder(String id)
+    {
+        int result=0;
+        String sql="DELETE FROM tblOutputOrder WHERE _id=?";
+        try {
+            PreparedStatement prst = getConnection().prepareStatement(sql);
+            prst.setString(1, id);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return result>0;
+    }
+    public boolean deleteOutputOrderPr(String id)
+    {
+        int result=0;
+        String sql="DELETE FROM tblOutputList WHERE _idOP=?";
+        try {
+            PreparedStatement prst = getConnection().prepareStatement(sql);
+            prst.setString(1, id);
+            result=prst.executeUpdate();
+            prst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return result>0;
+    }
 }

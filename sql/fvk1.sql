@@ -61,8 +61,10 @@ _date varchar(20),
 _totalPrice varchar(15),
 _quantityProduct int
 )
-SELECT *FROM tblInputOrder
+	
 DROP TABLE tblCustomer
+DROP TABLE tblInputList
+DROP TABLE tblInputOrder
 DROP TABLE  tblOutputOrder
 SELECT *FROM tblInputList WHERE _idOrder='#IO10002'
 CREATE TABLE tblCustomer
@@ -73,6 +75,7 @@ _phonenumber varchar(11),
 _total varchar(15),
 _rank varchar(10)
 )
+SELECT*FROM tblInputOrder
 CREATE TABLE tblOutputOrder
 (
 _id varchar(10) PRIMARY KEY,
@@ -81,7 +84,8 @@ _date varchar(20) NOT NULL,
 _quantity int,
 _sale varchar(15),
 _totalamount varchar(15) NOT NULL,
-_note nvarchar(max)
+_note nvarchar(max),
+_cuspay varchar(15)
 )
 CREATE TABLE tblOutputList
 (
@@ -90,12 +94,13 @@ _idPr varchar(10) references tblProduct (_id) NOT NULL,
 _quantity int NOT NULL,
 _amount varchar(15)
 )
-DROP TABLE tblcodesale
+DROP TABLE tblCustomer
 CREATE TABLE tblcodesale
 (
 _code varchar(10) PRIMARY KEY,
 _price varchar(15) NOT NULL,
 _status varchar(10) NOT NULL
 )
-INSERT INTO tblcodesale VALUES('123455','200000','used')
-DELETE FROM tbl WHERE
+INSERT INTO tblOutputOrder VALUES('#IO10006','huy','12-07-2017','')
+DELETE FROM tblOutputOrder WHERE _id='#OO10003'
+SELECT * FROM tblOutputList
